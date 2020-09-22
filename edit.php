@@ -1,12 +1,18 @@
 <?php
 session_start();
 require('dbconnect.php');
+
 $year = $_POST['year'];
 $month = $_POST['month'];
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
-// 祝日を取得------------------------
+if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
+  $_SESSION = $_POST;
+  header('Location: check.php');
+}
+
+// 祝日を取得↓ ------------------------
 $api_key = 'AIzaSyDn5SBBZZ0sW9OehOXESw-EEoIpym4KX_4';
 $calendar_id = urlencode('japanese__ja@holiday.calendar.google.com');  // Googleの提供する日本の祝日カレンダ
 
@@ -23,18 +29,11 @@ $query = array(
     'singleEvents' => 'true'
 );
 
-$results = [];
 if ($data = file_get_contents($url.http_build_query($query), true)) {
   // $queryをクエリ化してURLに結合する。
     $data = json_decode($data);
-    foreach ($data->items as $row) {
-        $results[$row->start->date] = $row->summary;
-    }
 }
-/// 祝日を取得------------------------
-
-$timestamp = mktime(0,0,0,$month,1,$year);
-$week = date("w", $timestamp);
+/// 祝日を取得↑------------------------
 ?>
 
 <!DOCTYPE html>
@@ -46,66 +45,75 @@ $week = date("w", $timestamp);
   </head>
 
   <body>
-  <p>カレンダーを取得する。</p>
-  <form action="" method="post">
-    <select name="year">
-      <option value=2020>2020</option>
-      <option value=2021>2021</option>
-      <option value=2022>2022</option>
-    </select>
-
-    <select name="month">
-      <option value=01>1</option>
-      <option value=02>2</option>
-      <option value=03>3</option>
-      <option value=04>4</option>
-      <option value=05>5</option>
-      <option value=06>6</option>
-      <option value=07>7</option>
-      <option value=08>8</option>
-      <option value=09>9</option>
-      <option value=10>10</option>
-      <option value=11>11</option>
-      <option value=12>12</option>
-    </select>
-  <input type="submit" value="取得する">
-  <?php echo $year.$month; ?>
-
-</form>
-  <form action='' method="post">
-    <?php for($i=1; $i < $lastday + 1; $i++) {
-      print($i);  // 日付出力
-      $timestamp = mktime(0,0,0,$month,$i,$year);
-      $week = date("w", $timestamp);
-      echo $dayOfTheWeek[$week];  // 日本語で曜日出力
-      $targetDay = $year."-".$month."-".$i;
-      // ループ日が祝日だった場合
-
-      if ($week == 0  || $week == 6 ) {
-        echo "<input type='checkbox' name='holiday' value=".$i." checked='checked'><br>"; 
-        continue;
-      }
-      foreach($data->items as $row) {
-        if ($row->start->date === $targetDay) {
-          echo "<input type='checkbox' name='holiday' value=".$i." checked='checked'>"; 
-          echo $row->summary."<br>";
-          $isHoliday = "ON";
-          break;
-        }
-      }
-      if ($isHoliday !=="ON") {
-        echo "<input type='checkbox' name='holiday' value=".$i."><br>";
-      }
-      $isHoliday = "OFF";
-    }
-    ?>
-    <input type='submit' value="登録する" />
-  </form>
-  <h1><?php echo "カレンダー編集" ?></h1>
+    <h1><?php echo "カレンダー編集" ?></h1>
     本日：<?php  echo date("Y年m月d日"); ?>
+    <p>カレンダーを取得する。</p>
     <form action="" method="post">
-    
+      <select name="year">
+        <option value=2020>2020</option>
+        <option value=2021>2021</option>
+        <option value=2022>2022</option>
+      </select>
+
+      <select name="month">
+        <option value=01>1</option>
+        <option value=02>2</option>
+        <option value=03>3</option>
+        <option value=04>4</option>
+        <option value=05>5</option>
+        <option value=06>6</option>
+        <option value=07>7</option>
+        <option value=08>8</option>
+        <option value=09>9</option>
+        <option value=10>10</option>
+        <option value=11>11</option>
+        <option value=12>12</option>
+      </select>
+      <input type="submit" name='get' value="取得する">
+      <?php echo $year.$month; ?>
     </form>
+
+    <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
+      <form action='' method="post">
+        <!-- 日付のチェックボックス -->
+        <?php for($i=1; $i < $lastday + 1; $i++) {
+          print($i);  // 日付出力
+          $timestamp = mktime(0,0,0,$month,$i,$year);
+          $week = date("w", $timestamp);  // 曜日を数字で格納
+          echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+          echo $dayOfTheWeek[$week];  // 日本語で曜日出力
+          $targetDay = $year."-".$month."-".$i;  // 2020-9-1の形で格納
+
+          if ($week == 0  || $week == 6 ) { // 土日だった場合
+            echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
+            continue;
+            // 土日だった場合は、ループをスキップ
+          }
+          foreach($data->items as $row) {
+            if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
+              $holidayName = $row->summary;
+              echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
+              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+
+              echo $holidayName."<br>";
+              $isHoliday = "ON";
+              break;
+            }
+          }
+          if ($isHoliday !=="ON") {  // 土日でも祝日でもなかった場合
+            echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";
+          }
+          $isHoliday = "OFF";
+        }
+        ?>
+        <p>前月の不足時間</p>
+        <input type='time' name='lackTime' value='00:00'> <!-- 不足時間 -->
+        <input type='hidden' name='year' value="<?php echo $year ?>" />
+        <input type='hidden' name='month' value="<?php echo $month ?>" />
+
+        <input type='submit' name='submit' value="登録する" />
+      </form>
+    <?php endif; ?>
   </body>
 </html>
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
@@ -151,10 +159,9 @@ print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-$word = "lastday";
+$word = "date";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';

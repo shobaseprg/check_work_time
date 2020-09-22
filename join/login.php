@@ -8,7 +8,6 @@ require('../dbconnect.php');
 if ($_COOKIE !== '')  {
   $name = $_COOKIE['name'];
 }
-
 if(!empty($_POST)) {
   if (($_POST['name'] !=='' && $_POST['password'] !=='')) {
     $loginWords = $db->prepare('SELECT * FROM users WHERE name=? AND password=?');
