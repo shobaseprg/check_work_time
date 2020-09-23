@@ -23,17 +23,22 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   <body>
     <h1>この設定で登録しますか？</h1>
     <p>先月不足時間</p>
-    <?php echo $_SESSION['lackTime'] ;?>
+    <?php echo $_SESSION['lackTimeMinit'] ;?>
     <p>設定年月日</p>
     <?php echo $_SESSION['year']."年".$_SESSION['month']."月" ;?>
 
-    <?php $i = 0; ?>
+    <?php $i = 0; 
+    $defineWorkTime = 0;
+    $defineWorkDay = 0;
+    ?>
+
     <?php foreach ($_SESSION['week'] as $week) : ?>
       <p><?php echo ($i + 1)."日"."  ".$dayOfTheWeek[$week] ;?>
         <?php if(in_array(($i + 1), $_SESSION['holiday'])) { // 配列の要素に合致するものがあるか(休日かどうか)
           echo "休日  ";
         } else {
           $defineWorkTime += 8;
+          $defineWorkDay += 1;
         }
         echo $_SESSION['holidayName'][$i + 1];  // 該当日が祝日に合致したら
         ?>
@@ -41,14 +46,10 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     <?php endforeach ;?>
     <br>
     <?php 
-      echo "所定労働時間  ".$defineWorkTime.":00" ;
-      $defineWorkTimeToMimit = changeMimit($defineWorkTime);
-      echo "(".$defineWorkTimeToMimit."分)";
-      echo "先月不足時間  ".$_SESSION['lackTime'];
-      $lackTimeToMimit = changeMimit($_SESSION['lackTime']);
-      echo "(".$lackTimeToMimit."分)";
-      $totalMinit = $defineWorkTimeToMimit + $lackTimeToMimit;
-      echo "必要労働時間".changeHour($totalMinit)."(".$totalMinit."分)";
+      echo "所定労働日数  ".$defineWorkDay;
+      echo "所定労働時間  ".changeMimit($defineWorkTime);
+      echo "先月不足時間  ".$_SESSION['lackTimeMinit'];
+      echo "必要労働時間".(changeMimit($defineWorkTime) + $_SESSION['lackTimeMinit']);
     ?>
     <br>
     <a href='edit.php'>戻る</a>

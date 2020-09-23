@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('dbconnect.php');
+require('calculate.php');
 
 $year = $_POST['year'];
 $month = $_POST['month'];
@@ -8,8 +9,9 @@ $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
+  $_SESSION = $_POST;
   $_SESSION['holiday'] = $_POST['holiday'];
-  $_SESSION['lackTime'] = $_POST['lackTime'];
+  $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);
   header('Location: check.php');
   exit();
 }
@@ -108,7 +110,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         }
         ?>
         <p>前月の不足時間</p>
-        <input type='time' name='lackTime' value='00:00'> <!-- 不足時間 -->
+        <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 -->
         <input type='hidden' name='year' value="<?php echo $year ?>" />
         <input type='hidden' name='month' value="<?php echo $month ?>" />
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
