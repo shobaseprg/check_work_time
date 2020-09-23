@@ -1,6 +1,9 @@
 <?php  
 session_start();
 require('../dbconnect.php');
+// ini_set('display_errors', 1);
+// $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 if (!empty($_POST)) {
   if($_POST['name'] === ""){
@@ -21,8 +24,18 @@ if (!empty($_POST)) {
     } 
   }
   if (empty($error)) {
-      $statement = $db->prepare('INSERT INTO users SET name=?, password=?');
-      $statement->execute(array($_POST['name'],sha1($_POST['password'])));
+      $user = $db->prepare('INSERT INTO users SET name=?, password=?');
+      $user->execute(array($_POST['name'],sha1($_POST['password'])));
+      // ユーザーを作成する
+
+      // $userForCreateCalendar = $db->prepare('SELECT *  FROM users WHERE name = ?');
+      // $userForCreateCalendar->execute(array($_POST['name']));
+      // $targetUser = $userForCreateCalendar->fetch();
+      // // 作成したユーザーを取得
+
+      // $baseCalendar = $db->prepare('INSERT INTO calendar SET user_id=?');
+      // $baseCalendar->execute(array($targetUser['id']));
+      // // ユーザーに紐づくカレンダーを作成
 
       header('Location: thanks.php');
       exit();

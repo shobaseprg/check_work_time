@@ -1,19 +1,14 @@
 <?php
 session_start();
 require('dbconnect.php');
+require('calculate.php');
 
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 $defineWorkTime = 0;
 
-function changeMimit($time) {
-  $splitTime = explode(":",$time);
-  return (intval($splitTime[0] * 60)) + intval($splitTime[1]);
-}
-
-function changeHour($time) {
-  $hour = floor($time / 60);
-  $minit = $time % 60;
-  return $hour."時間".$minit."分";
+if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
+  $_SESSION['lackTimeMinit'] = $lackTimeToMimit;
+  header('Location: check.php');
 }
 ?>
 
@@ -46,19 +41,19 @@ function changeHour($time) {
     <?php endforeach ;?>
     <br>
     <?php 
-      echo "所定労働時間  ".$defineWorkTime."時間" ;
+      echo "所定労働時間  ".$defineWorkTime.":00" ;
       $defineWorkTimeToMimit = changeMimit($defineWorkTime);
       echo "(".$defineWorkTimeToMimit."分)";
       echo "先月不足時間  ".$_SESSION['lackTime'];
       $lackTimeToMimit = changeMimit($_SESSION['lackTime']);
-      echo "(".$lackTimeToMimit.")";
+      echo "(".$lackTimeToMimit."分)";
       $totalMinit = $defineWorkTimeToMimit + $lackTimeToMimit;
       echo "必要労働時間".changeHour($totalMinit)."(".$totalMinit."分)";
     ?>
     <br>
     <a href='edit.php'>戻る</a>
     <form action="" method='post'>
-      <input type="submit" name="approve" method="post">
+      <input type="submit" name="approve" method="post" value='登録する'>
     </form> 
   </body>
 </html>
@@ -118,6 +113,24 @@ echo '</pre>';
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
 $word = "";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($_SESSION['lackTimeMinit']);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "_SESSION['userId']";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';

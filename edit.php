@@ -8,8 +8,10 @@ $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
-  $_SESSION = $_POST;
+  $_SESSION['holiday'] = $_POST['holiday'];
+  $_SESSION['lackTime'] = $_POST['lackTime'];
   header('Location: check.php');
+  exit();
 }
 
 // 祝日を取得↓ ------------------------
@@ -110,8 +112,8 @@ if ($data = file_get_contents($url.http_build_query($query), true)) {
         <input type='time' name='lackTime' value='00:00'> <!-- 不足時間 -->
         <input type='hidden' name='year' value="<?php echo $year ?>" />
         <input type='hidden' name='month' value="<?php echo $month ?>" />
-
-        <input type='submit' name='submit' value="登録する" />
+        <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
+        <input type='submit' name='submit' value="確認する" />
       </form>
     <?php endif; ?>
   </body>
@@ -162,6 +164,16 @@ echo '</pre>';
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
 $word = "date";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "_SESSION";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
