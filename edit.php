@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
   $_SESSION['holiday'] = $_POST['holiday'];
   $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);
   header('Location: check.php');
+
   exit();
 }
 
@@ -73,7 +74,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <option value=12>12</option>
       </select>
       <input type="submit" name='get' value="取得する">
-      <?php echo $year.$month; ?>
+      <?php echo $targetDay; ?>
     </form>
 
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
@@ -85,7 +86,12 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
           $week = date("w", $timestamp);  // 曜日を数字で格納
           echo "<input type='hidden' name='week[]' value='".$week."' />"; 
           echo $dayOfTheWeek[$week];  // 日本語で曜日出力
-          $targetDay = $year."-".$month."-".$i;  // 2020-9-1の形で格納
+
+          if ($i < 10) {
+            $targetDay = $year."-".$month."-0".$i;  // 2020-9-01の形で格納
+          } else {
+            $targetDay = $year."-".$month."-".$i;  // 日付が十桁以上ならそのまま
+          }
 
           if ($week == 0  || $week == 6 ) { // 土日だった場合
             echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
@@ -113,6 +119,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 -->
         <input type='hidden' name='year' value="<?php echo $year ?>" />
         <input type='hidden' name='month' value="<?php echo $month ?>" />
+        <input type='hidden' name='lastday' value="<?php echo $lastday ?>" />
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
         <input type='submit' name='submit' value="確認する" />
       </form>
@@ -147,7 +154,7 @@ echo '</pre>';
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-$word = "lastday";
+$word = "targetDay";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
@@ -164,7 +171,7 @@ echo '</pre>';
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-$word = "date";
+$word = "";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($date);
 echo '</pre>';
