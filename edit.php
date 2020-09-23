@@ -4,7 +4,7 @@ require('dbconnect.php');
 
 $year = $_POST['year'];
 $month = $_POST['month'];
-$lastday = date('d', strtotime('last day of '.$year.'-'.$month));
+$lastday = date('d', strtotime('last day of '.$year.'-'.$month));// 指定月の最終日を取得
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
   header('Location: check.php');
   exit();
 }
-
+unset($_SESSION);
 // 祝日を取得↓ ------------------------
 $api_key = 'AIzaSyDn5SBBZZ0sW9OehOXESw-EEoIpym4KX_4';
 $calendar_id = urlencode('japanese__ja@holiday.calendar.google.com');  // Googleの提供する日本の祝日カレンダ
@@ -30,7 +30,6 @@ $query = array(
     'orderBy' => 'startTime',
     'singleEvents' => 'true'
 );
-
 if ($data = file_get_contents($url.http_build_query($query), true)) {
   // $queryをクエリ化してURLに結合する。
     $data = json_decode($data);
@@ -86,26 +85,19 @@ if ($data = file_get_contents($url.http_build_query($query), true)) {
           echo $dayOfTheWeek[$week];  // 日本語で曜日出力
           $targetDay = $year."-".$month."-".$i;  // 2020-9-1の形で格納
 
-          if ($week == 0  || $week == 6 ) { // 土日だった場合
+          if ($week === "0"  || $week === "6" ) { // 土日だった場合
             echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
             continue;
             // 土日だった場合は、ループをスキップ
           }
-          foreach($data->items as $row) {
-            if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
-              $holidayName = $row->summary;
-              echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
-              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
-
-              echo $holidayName."<br>";
-              $isHoliday = "ON";
-              break;
-            }
+          if (in_array($targetDay, $data->items->date)) {  // 祝日を回して調査日と合致するか確認
+            $holidayName = $data->items->summary;
+            echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
+            echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+            echo $holidayName."<br>";
+            continue;
           }
-          if ($isHoliday !=="ON") {  // 土日でも祝日でもなかった場合
-            echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";
-          }
-          $isHoliday = "OFF";
+          echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";     
         }
         ?>
         <p>前月の不足時間</p>
