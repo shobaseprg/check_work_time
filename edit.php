@@ -1,7 +1,6 @@
 <?php
 session_start();
 require('dbconnect.php');
-require('calculate.php');
 
 $year = $_POST['year'];
 $month = $_POST['month'];
@@ -9,11 +8,12 @@ $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
-  $_SESSION['holiday'] = $_POST['holiday'];  // チェックされた休日を格納
-  $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);  // 不足時間を分で格納
+  $_SESSION['holiday'] = $_POST['holiday'];
+  $_SESSION['lackTime'] = $_POST['lackTime'];
   header('Location: check.php');
   exit();
 }
+
 // 祝日を取得↓ ------------------------
 $api_key = 'AIzaSyDn5SBBZZ0sW9OehOXESw-EEoIpym4KX_4';
 $calendar_id = urlencode('japanese__ja@holiday.calendar.google.com');  // Googleの提供する日本の祝日カレンダ
@@ -87,7 +87,6 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
 
           if ($week == 0  || $week == 6 ) { // 土日だった場合
             echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
-            // チェックボックスにデフォルトでチェック
             continue;
             // 土日だった場合は、ループをスキップ
           }
@@ -95,9 +94,8 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
             if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
               $holidayName = $row->summary;
               echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
-              // チェックボックスをデフォルトでチェック
               echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
-              // $_POST['21'] = 敬老の日 の形で送る
+
               echo $holidayName."<br>";
               $isHoliday = "ON";
               break;
@@ -110,7 +108,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         }
         ?>
         <p>前月の不足時間</p>
-        <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 -->
+        <input type='time' name='lackTime' value='00:00'> <!-- 不足時間 -->
         <input type='hidden' name='year' value="<?php echo $year ?>" />
         <input type='hidden' name='month' value="<?php echo $month ?>" />
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
@@ -119,6 +117,40 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
     <?php endif; ?>
   </body>
 </html>
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "results";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "start";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "end";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "lastday";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php

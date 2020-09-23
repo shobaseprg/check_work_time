@@ -6,9 +6,9 @@ require('calculate.php');
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 $defineWorkTime = 0;
 
-if ($_POST['approve']) {  // 登録ボタンが押された場合
+if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   $_SESSION['lackTimeMinit'] = $lackTimeToMimit;
-  header('Location: register.php');
+  header('Location: check.php');
 }
 ?>
 
@@ -23,7 +23,7 @@ if ($_POST['approve']) {  // 登録ボタンが押された場合
   <body>
     <h1>この設定で登録しますか？</h1>
     <p>先月不足時間</p>
-    <?php echo $_SESSION['lackTimeMinit'] ;?>
+    <?php echo $_SESSION['lackTime'] ;?>
     <p>設定年月日</p>
     <?php echo $_SESSION['year']."年".$_SESSION['month']."月" ;?>
 
@@ -44,14 +44,16 @@ if ($_POST['approve']) {  // 登録ボタンが押された場合
       echo "所定労働時間  ".$defineWorkTime.":00" ;
       $defineWorkTimeToMimit = changeMimit($defineWorkTime);
       echo "(".$defineWorkTimeToMimit."分)";
-      echo "先月不足時間  ".$_SESSION['lackTimeMinit'];
-      $totalMinit = $defineWorkTimeToMimit + $_SESSION['lackTimeMinit'];
-      echo "必要労働時間".$totalMinit;
+      echo "先月不足時間  ".$_SESSION['lackTime'];
+      $lackTimeToMimit = changeMimit($_SESSION['lackTime']);
+      echo "(".$lackTimeToMimit."分)";
+      $totalMinit = $defineWorkTimeToMimit + $lackTimeToMimit;
+      echo "必要労働時間".changeHour($totalMinit)."(".$totalMinit."分)";
     ?>
     <br>
     <a href='edit.php'>戻る</a>
     <form action="" method='post'>
-      <input type="submit" name="approve" value='登録する'>
+      <input type="submit" name="approve" method="post" value='登録する'>
     </form> 
   </body>
 </html>
@@ -59,6 +61,32 @@ if ($_POST['approve']) {  // 登録ボタンが押された場合
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
 $word = "_SESSION";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "start";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "end";
+echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
+print_r($$word);
+echo '</pre>';
+?>
+<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
+<?php
+$word = "lastday";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
@@ -84,7 +112,7 @@ echo '</pre>';
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-$word = "lackTimeToMimit";
+$word = "";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
