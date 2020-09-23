@@ -30,9 +30,10 @@ $query = array(
     'orderBy' => 'startTime',
     'singleEvents' => 'true'
 );
-if ($date = file_get_contents($url.http_build_query($query), true)) {
+
+if ($data = file_get_contents($url.http_build_query($query), true)) {
   // $queryをクエリ化してURLに結合する。
-    $date = json_decode($date);
+    $data = json_decode($data);
 }
 /// 祝日を取得↑------------------------
 ?>
@@ -90,21 +91,17 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
             continue;
             // 土日だった場合は、ループをスキップ
           }
-          // foreach($date->items as $row) {
-          //   if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
-          //     $holidayName = $row->summary;
-          //     echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
-          //     echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+          foreach($data->items as $row) {
+            if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
+              $holidayName = $row->summary;
+              echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
+              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
 
-          //     echo $holidayName."<br>";
-          //     $isHoliday = "ON";
-          //     break;
-          //   }
-          // }
-            if (in_array($targetDay, $date->items->start->date) {
-              
+              echo $holidayName."<br>";
+              $isHoliday = "ON";
+              break;
             }
-          
+          }
           if ($isHoliday !=="ON") {  // 土日でも祝日でもなかった場合
             echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";
           }
@@ -168,7 +165,7 @@ echo '</pre>';
 <?php
 $word = "date";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($date);
+print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
