@@ -6,13 +6,24 @@ require('calculate.php');
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 $defineWorkTime = 0;
 
+// 休日用配列を作成
+$holidayArray = [];
+for ($i=1; $i < 32; $i++) { 
+  if(in_array(($i), $_SESSION['holiday'])) { // 配列の要素に合致するものがあるか(休日かどうか)
+    $holidayArray[] = 1;
+  } else {
+    $holidayArray[] = 0;
+  }
+}
+
+
 if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
 
   $saveCalendar = $db->prepare('INSERT INTO calendar SET lackTime=?, year=?, month=?,
-  -- 1=?, 2=?, 3=?, 4=?, 5=?, 6=?, 7=?, 8=?, 9=?, 10=?, 
-  -- 11=?, 12=?, 13=?, 14=?, 15=?, 16=?, 17=?, 18=?, 19=?, 20=?, 
-  -- 21=?, 22=?, 23=?, 24=?, 25=?, 26=?, 27=?, 28=?, 29=?, 30=?, 
-  -- 31=?,
+  1=?, 2=?, 3=?, 4=?, 5=?, 6=?, 7=?, 8=?, 9=?, 10=?, 
+  11=?, 12=?, 13=?, 14=?, 15=?, 16=?, 17=?, 18=?, 19=?, 20=?, 
+  21=?, 22=?, 23=?, 24=?, 25=?, 26=?, 27=?, 28=?, 29=?, 30=?, 
+  31=?,
   lastday=?, user_id =?');
   $saveCalendar->execute(array($_SESSION['lackTimeMinit'], $_SESSION['year'],$_SESSION['month'], 
   $_SESSION['lastday'], $_SESSION['userId']));
@@ -123,7 +134,7 @@ echo '</pre>';
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-$word = "";
+$word = "holidayArray";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
@@ -147,3 +158,4 @@ print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+
