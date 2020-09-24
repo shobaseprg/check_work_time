@@ -6,7 +6,6 @@ require('calculate.php');
 $year = $_POST['year'];
 $month = $_POST['month'];
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
-$dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
   $_SESSION = $_POST;

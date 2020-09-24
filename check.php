@@ -3,16 +3,15 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-$dayOfTheWeek =array('日','月','火','水','木','金','土');
 $defineWorkTime = 0;
 
 // 休日用配列を作成
-$holidayNameArray = [];
+$holidayArray = [];
 for ($i=1; $i < 32; $i++) { 
   if(in_array(($i), $_SESSION['holiday'])) { // 配列の要素に合致するものがあるか(休日かどうか)
-    $holidayNameArray[] = 1;
+    $holidayArray[] = 1;
   } else {
-    $holidayNameArray[] = 0;
+    $holidayArray[] = 0;
   }
 }
 
@@ -58,11 +57,19 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   $_SESSION['week'][21],$_SESSION['week'][22],$_SESSION['week'][23],$_SESSION['week'][24],$_SESSION['week'][25],
   $_SESSION['week'][26],$_SESSION['week'][27],$_SESSION['week'][28],$_SESSION['week'][29],$_SESSION['week'][30]));
 
-  // $saveHolidayName = $db->prepare('INSERT INTO day SET   user_id =?,
-  // 1d=?, 2d=?, 3d=?, 4d=?, 5d=?, 6d=?, 7d=?, 8d=?, 9d=?, 10d=?, 
-  // 11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
-  // 21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
-  // 31d=?');
+  $saveHolidayName = $db->prepare('INSERT INTO holidayName SET user_id =?,
+  1d=?, 2d=?, 3d=?, 4d=?, 5d=?, 6d=?, 7d=?, 8d=?, 9d=?, 10d=?, 
+  11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
+  21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
+  31d=?');
+  $saveHolidayName->execute(array($holidayNameArray[0], 
+    $holidayNameArray[1], $holidayNameArray[2], $holidayNameArray[3], $holidayNameArray[4], $holidayNameArray[5], 
+    $holidayNameArray[6], $holidayNameArray[7], $holidayNameArray[8], $holidayNameArray[9], $holidayNameArray[10], 
+    $holidayNameArray[11], $holidayNameArray[12], $holidayNameArray[13], $holidayNameArray[14], $holidayNameArray[15], 
+    $holidayNameArray[16], $holidayNameArray[17], $holidayNameArray[18], $holidayNameArray[19], $holidayNameArray[20], 
+    $holidayNameArray[21], $holidayNameArray[22], $holidayNameArray[23], $holidayNameArray[24], $holidayNameArray[25], 
+    $holidayNameArray[26], $holidayNameArray[27], $holidayNameArray[28], $holidayNameArray[29], $holidayNameArray[30], 
+  ));
 
   exit();
 }
