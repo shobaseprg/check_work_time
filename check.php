@@ -62,7 +62,7 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
   21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
   31d=?');
-  $saveHolidayName->execute(array($holidayNameArray[0], 
+  $saveHolidayName->execute(array($_SESSION['userId'],$holidayNameArray[0], 
     $holidayNameArray[1], $holidayNameArray[2], $holidayNameArray[3], $holidayNameArray[4], $holidayNameArray[5], 
     $holidayNameArray[6], $holidayNameArray[7], $holidayNameArray[8], $holidayNameArray[9], $holidayNameArray[10], 
     $holidayNameArray[11], $holidayNameArray[12], $holidayNameArray[13], $holidayNameArray[14], $holidayNameArray[15], 
