@@ -2,8 +2,8 @@
 session_start();
 require('dbconnect.php');
 
-if (empty($_SESSION['userId'])) {
-  header('Location : join/login.php');
+if (empty($_SESSION)) {
+  header('Location:join/login.php');
 }
 
 ini_set('display_errors', 1);

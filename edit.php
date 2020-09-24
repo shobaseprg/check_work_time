@@ -3,10 +3,9 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-if (empty($_SESSION['userId'])) {
-  header('Location : join/login.php');
+if (empty($_SESSION)) {
+  header('Location:join/login.php');
 }
-
 $year = $_POST['year'];
 $month = $_POST['month'];
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
@@ -89,7 +88,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
     </form>
 
 
-<!-- ===================================
+      <!-- ===================================
       保存を呼び出した時
       =================================== -->
 
