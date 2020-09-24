@@ -20,12 +20,19 @@ for ($i=1; $i < 32; $i++) {
 if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
 
   $saveCalendar = $db->prepare('INSERT INTO calendar SET lackTime=?, year=?, month=?,
-  1=?, 2=?, 3=?, 4=?, 5=?, 6=?, 7=?, 8=?, 9=?, 10=?, 
-  11=?, 12=?, 13=?, 14=?, 15=?, 16=?, 17=?, 18=?, 19=?, 20=?, 
-  21=?, 22=?, 23=?, 24=?, 25=?, 26=?, 27=?, 28=?, 29=?, 30=?, 
-  31=?,
+  1d=?, 2d=?, 3d=?, 4d=?, 5d=?, 6d=?, 7d=?, 8d=?, 9d=?, 10d=?, 
+  11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
+  21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
+  31d=?,
   lastday=?, user_id =?');
   $saveCalendar->execute(array($_SESSION['lackTimeMinit'], $_SESSION['year'],$_SESSION['month'], 
+  $holidayArray[0],$holidayArray[1],  $holidayArray[2],$holidayArray[3],  $holidayArray[4],
+  $holidayArray[5],$holidayArray[6],  $holidayArray[7],$holidayArray[8],  $holidayArray[9],
+  $holidayArray[10],$holidayArray[11],  $holidayArray[12],$holidayArray[13],  $holidayArray[14],
+  $holidayArray[15],$holidayArray[16],  $holidayArray[17],$holidayArray[18],  $holidayArray[19],
+  $holidayArray[20],$holidayArray[21],  $holidayArray[22],$holidayArray[23],  $holidayArray[24],
+  $holidayArray[25],$holidayArray[26],  $holidayArray[27],$holidayArray[28],  $holidayArray[29],
+  $holidayArray[30],
   $_SESSION['lastday'], $_SESSION['userId']));
 
   header('Location: check.php');
