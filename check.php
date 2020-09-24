@@ -2,6 +2,10 @@
 session_start();
 require('dbconnect.php');
 require('calculate.php');
+if (empty($_SESSION['userId'])) {
+  header('Location : join/login.php');
+}
+
 
 $defineWorkTime = 0;
 

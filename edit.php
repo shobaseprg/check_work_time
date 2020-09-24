@@ -3,6 +3,10 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
+if (empty($_SESSION['userId'])) {
+  header('Location : join/login.php');
+}
+
 $year = $_POST['year'];
 $month = $_POST['month'];
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
@@ -79,6 +83,71 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
       <input type="submit" name='get' value="取得する">
       <?php echo $targetDay; ?>
     </form>
+
+    <form action="" method="post">
+      <input type="submit" name='recall' value="呼び出す">
+    </form>
+
+
+<!-- ===================================
+      保存を呼び出した時
+      =================================== -->
+
+    <?php if (!empty($_POST['recall'])) : ?>  
+      <form action='' method="post">
+      <?php
+      echo "<pre>";
+        $saveDataCalendar = $db->prepare('SELECT * FROM calendar WHERE user_id = ?');
+        $saveDataCalendar->execute(array($_SESSION['userId']));
+        $saveCalendar = $saveDataCalendar->fetch();
+        print_r($saveCalendar);
+
+        $saveDataDay = $db->prepare('SELECT * FROM day WHERE user_id = ?');
+        $saveDataDay->execute(array($_SESSION['userId']));
+        $saveDay = $saveDataDay->fetch();
+        print_r($saveDay);
+
+        $saveDataHolidayName = $db->prepare('SELECT * FROM holidayName WHERE user_id = ?');
+        $saveDataHolidayName->execute(array($_SESSION['userId']));
+        $saveHolidayName = $saveDataHolidayName->fetch();
+        print_r($saveHolidayName);
+      echo "</pre>";
+        for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
+          print($i);  // 日付出力
+          $week = $saveDay[$i];// 曜日を数字で格納
+          echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+          echo $dayOfTheWeek[$week];  // 日本語で曜日出力
+          if ($saveCalendar[$i] == 1 ) { // 休日だった場合
+            echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
+            if ($saveHolidayName[$i] !== "") {  // 祝日を回して調査日と合致するか確認
+              $holidayName = $saveHolidayName[$i];
+              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+              echo $holidayName."<br>";
+              $isHoliday = "ON";
+            }
+          } else {
+            echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";
+          }
+        }
+        $saveLackTimeHour = changeHour($saveCalendar['lackTime']);
+      ?>
+        <p>前月の不足時間</p>
+        <input type='time' name='lackTimeHour' value="<?php echo $saveLackTimeHour ?>" />
+        <input type='hidden' name='year' value="<?php $saveCalendar['year'] ?>" />
+        <input type='hidden' name='month' value="<?php $saveCalendar['month'] ?>" />
+        <input type='hidden' name='lastday' value="<?php $saveCalendar['lastday'] ?>" />
+        <input type='hidden' name='userId' value="<?php $saveCalendar['user_id'] ?>" />
+        <input type='submit' name='submit' value="確認する" />
+      </form>
+    <?php endif; ?>
+
+
+
+
+
+
+
+
 
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
       <form action='' method="post">
