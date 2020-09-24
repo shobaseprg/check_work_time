@@ -11,7 +11,11 @@ $dayOfTheWeek =array('日','月','火','水','木','金','土');
 if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
   $_SESSION = $_POST;
   $_SESSION['holiday'] = $_POST['holiday'];
-  $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);
+  if (!empty($_POST['lackTimeHour'])) {
+    $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);
+  } else {
+    $_SESSION['lackTimeMinit'] = 0;
+  }
   header('Location: check.php');
 
   exit();
