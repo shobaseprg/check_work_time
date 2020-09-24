@@ -2,6 +2,11 @@
 session_start();
 require('dbconnect.php');
 
+if (empty($_SESSION['userId'])){
+  header("Location: join/login.php");
+}
+
+
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
 function changeMimit($hourAndMinitTime) {

@@ -3,6 +3,11 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
+if (empty($_SESSION['userId'])){
+  header("Location: join/login.php");
+}
+
+
 $defineWorkTime = 0;
 
 // 休日用配列を作成
@@ -116,7 +121,7 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     ?>
     <br>
     <a href='edit.php'>戻る</a>
-    <form action="" method='post'>
+    <form action="calendar.php" method='post'>
       <input type="submit" name="approve" method="post" value='登録する'>
     </form> 
   </body>
