@@ -115,13 +115,12 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
           $week = $saveDay[$i];// 曜日を数字で格納
           echo "<input type='hidden' name='week[]' value='".$week."' />"; 
           echo $dayOfTheWeek[$week];  // 日本語で曜日出力
-          if ($saveCalendar[$i] == 1 ) { // 休日だった場合
+          if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
             echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
-            if ($saveHolidayName[$i] !== "") {  // 祝日を回して調査日と合致するか確認
-              $holidayName = $saveHolidayName[$i];
+            if ($saveHolidayName[$i."d"] !== "") {  // 祝日を回して調査日と合致するか確認
+              $holidayName = $saveHolidayName[$i."d"];
               echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
               echo $holidayName."<br>";
-              $isHoliday = "ON";
             }
           } else {
             echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";

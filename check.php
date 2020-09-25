@@ -46,31 +46,35 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   $holidayArray[30],
   $_SESSION['lastday'], $_SESSION['userId']));
 
-  $saveDay = $db->prepare('INSERT INTO day SET   user_id =?,
+  $saveDay = $db->prepare('UPDATE day SET
   1d=?, 2d=?, 3d=?, 4d=?, 5d=?, 6d=?, 7d=?, 8d=?, 9d=?, 10d=?, 
   11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
   21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
-  31d=?');
-  $saveDay->execute(array($_SESSION['userId'],
+  31d=?
+  WHERE user_id =?');
+  $saveDay->execute(array(
   $_SESSION['week'][0],$_SESSION['week'][1],$_SESSION['week'][2],$_SESSION['week'][3],$_SESSION['week'][4],$_SESSION['week'][5],
   $_SESSION['week'][6],$_SESSION['week'][7],$_SESSION['week'][8],$_SESSION['week'][9],$_SESSION['week'][10],
   $_SESSION['week'][11],$_SESSION['week'][12],$_SESSION['week'][13],$_SESSION['week'][14],$_SESSION['week'][15],
   $_SESSION['week'][16],$_SESSION['week'][17],$_SESSION['week'][18],$_SESSION['week'][19],$_SESSION['week'][20],
   $_SESSION['week'][21],$_SESSION['week'][22],$_SESSION['week'][23],$_SESSION['week'][24],$_SESSION['week'][25],
-  $_SESSION['week'][26],$_SESSION['week'][27],$_SESSION['week'][28],$_SESSION['week'][29],$_SESSION['week'][30]));
+  $_SESSION['week'][26],$_SESSION['week'][27],$_SESSION['week'][28],$_SESSION['week'][29],$_SESSION['week'][30],
+  $_SESSION['userId'],));
 
-  $saveHolidayName = $db->prepare('INSERT INTO holidayName SET user_id =?,
+  $saveHolidayName = $db->prepare('UPDATE holidayName SET
   1d=?, 2d=?, 3d=?, 4d=?, 5d=?, 6d=?, 7d=?, 8d=?, 9d=?, 10d=?, 
   11d=?, 12d=?, 13d=?, 14d=?, 15d=?, 16d=?, 17d=?, 18d=?, 19d=?, 20d=?, 
   21d=?, 22d=?, 23d=?, 24d=?, 25d=?, 26d=?, 27d=?, 28d=?, 29d=?, 30d=?, 
-  31d=?');
-  $saveHolidayName->execute(array($_SESSION['userId'],$holidayNameArray[0], 
+  31d=?
+  WHERE user_id =?');
+  $saveHolidayName->execute(array($holidayNameArray[0], 
     $holidayNameArray[1], $holidayNameArray[2], $holidayNameArray[3], $holidayNameArray[4], $holidayNameArray[5], 
     $holidayNameArray[6], $holidayNameArray[7], $holidayNameArray[8], $holidayNameArray[9], $holidayNameArray[10], 
     $holidayNameArray[11], $holidayNameArray[12], $holidayNameArray[13], $holidayNameArray[14], $holidayNameArray[15], 
     $holidayNameArray[16], $holidayNameArray[17], $holidayNameArray[18], $holidayNameArray[19], $holidayNameArray[20], 
     $holidayNameArray[21], $holidayNameArray[22], $holidayNameArray[23], $holidayNameArray[24], $holidayNameArray[25], 
     $holidayNameArray[26], $holidayNameArray[27], $holidayNameArray[28], $holidayNameArray[29], $holidayNameArray[30], 
+    $_SESSION['userId']
   ));
   session_destroy();
   $_SESSION = array();
