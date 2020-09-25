@@ -3,8 +3,9 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-if (empty($_SESSION)) {
+if (empty($_SESSION['userId'])) {
   header('Location:join/login.php');
+  exit();
 }
 $year = $_POST['year'];
 $month = $_POST['month'];
@@ -130,21 +131,13 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
       ?>
         <p>前月の不足時間</p>
         <input type='time' name='lackTimeHour' value="<?php echo $saveLackTimeHour ?>" />
-        <input type='hidden' name='year' value="<?php $saveCalendar['year'] ?>" />
-        <input type='hidden' name='month' value="<?php $saveCalendar['month'] ?>" />
-        <input type='hidden' name='lastday' value="<?php $saveCalendar['lastday'] ?>" />
-        <input type='hidden' name='userId' value="<?php $saveCalendar['user_id'] ?>" />
+        <input type='hidden' name='year' value="<?php echo $saveCalendar['year'] ?>" />
+        <input type='hidden' name='month' value="<?php echo $saveCalendar['month'] ?>" />
+        <input type='hidden' name='lastday' value="<?php echo $saveCalendar['lastday'] ?>" />
+        <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
         <input type='submit' name='submit' value="確認する" />
       </form>
     <?php endif; ?>
-
-
-
-
-
-
-
-
 
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
       <form action='' method="post">

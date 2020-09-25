@@ -2,7 +2,7 @@
 session_start();
 require('dbconnect.php');
 
-if (empty($_SESSION)) {
+if (empty($_SESSION['userId'])) {
   header('Location:join/login.php');
 }
 

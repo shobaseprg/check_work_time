@@ -3,6 +3,9 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
+if (empty($_SESSION['userId'])) {
+  header('Location:join/login.php');
+}
 
 $defineWorkTime = 0;
 
@@ -76,8 +79,6 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     $holidayNameArray[26], $holidayNameArray[27], $holidayNameArray[28], $holidayNameArray[29], $holidayNameArray[30], 
     $_SESSION['userId']
   ));
-  session_destroy();
-  $_SESSION = array();
   header('Location: join/login.php');
   exit();
 }
