@@ -87,7 +87,6 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
       <input type="submit" name='recall' value="呼び出す">
     </form>
 
-
       <!-- ===================================
       保存を呼び出した時
       =================================== -->
