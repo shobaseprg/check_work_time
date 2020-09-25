@@ -139,15 +139,9 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <input type='submit' name='submit' value="確認する" />
       </form>
     <?php endif; ?>
-
-
-
-
-
-
-
-
-
+    <!-- ===================================
+      取得が押された場合
+    =================================== -->
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
       <form action='' method="post">
         <!-- 日付のチェックボックス -->

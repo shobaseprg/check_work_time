@@ -29,19 +29,24 @@ if (!empty($_POST)) {
       $user->execute(array($_POST['name'],sha1($_POST['password'])));
       // ユーザーを作成する
 
-      // $userForCreateCalendar = $db->prepare('SELECT *  FROM users WHERE name = ?');
-      // $userForCreateCalendar->execute(array($_POST['name']));
-      // $targetUser = $userForCreateCalendar->fetch();
-      // // 作成したユーザーを取得
+      $userForCreateCalendar = $db->prepare('SELECT *  FROM users WHERE name = ?');
+      $userForCreateCalendar->execute(array($_POST['name']));
+      $targetUser = $userForCreateCalendar->fetch();
+      // 作成したユーザーを取得
 
-      // $baseCalendar = $db->prepare('INSERT INTO calendar SET user_id=?');
-      // $baseCalendar->execute(array($targetUser['id']));
-      // // ユーザーに紐づくカレンダーを作成
+      $baseCalendar = $db->prepare('INSERT INTO calendar SET user_id=?');
+      $baseCalendar->execute(array($targetUser['id']));
+      // ユーザーに紐づくカレンダーを作成
+
+      $baseDay = $db->prepare('INSERT INTO day SET user_id=?');
+      $baseDay->execute(array($targetUser['id']));
+
+      $baseHN = $db->prepare('INSERT INTO holidayName SET user_id=?');
+      $baseHN->execute(array($targetUser['id']));
 
       header('Location: thanks.php');
       exit();
   }
-  unset($_SESSION);
 }
 ?>
 
