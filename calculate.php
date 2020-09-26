@@ -17,6 +17,3 @@ function changeHour($minitTime) {
 function fromDayToMinit($day) {
   return $day * 8 * 60;
 }
-
-
-?>
