@@ -62,16 +62,20 @@ if (!empty($_POST)) {
   <body>
   <h1>新規登録</h1>
     <form action="" method="post">
-      <p> name</p>
-        <input type="text" name="name" maxlength="10" value="<?php print(htmlspecialchars($_POST['name'], ENT_QUOTES));?>" />
+      <div>
+        name
+          <input type="text" name="name" maxlength="10" value="<?php print(htmlspecialchars($_POST['name'], ENT_QUOTES));?>" />
+      </div>
         <?php if($error['name'] === 'blank'): ?>
           <p class='error-display'>nameを入力してください</p>
         <?php endif; ?>
         <?php if($error['name'] === 'duplicate'): ?>
           <p class='error-display'>nameが重複しています。</p>
         <?php endif; ?>
-      <p>パスワード</p>
+      <div>
+      パスワード
         <input type="password" name="password" size="10" maxlength="20" value="<?php print(htmlspecialchars($_POST['password'],ENT_QUOTES));?>" />
+      </div>
         <?php if($error['password'] === 'length'): ?>
           <p class='error-display'>*パスワードを4文字以上、１０文字以内で入力してください</p>
         <?php endif; ?>

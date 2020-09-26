@@ -39,23 +39,31 @@ if(!empty($_POST)) {
   <body>
     <h1>ログイン</h1>
     <form action='' method='post'>
-      <p>name</p>
-        <input type='text' name='name' maxlength='10' value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>"/>
-      <p>password</p>
-        <input type='password' name='password' maxlength='10' value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES); ?>"/><br><br>
-      名前を保存しますか？
+      <div>
+        name
+          <input type='text' name='name' maxlength='10' value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>"/>
+      </div>
+      <div>
+        password
+          <input type='password' name='password' maxlength='10' value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES); ?>"/>
+      </div>
+      <br>
+      <div>
+        名前を保存しますか？
         <input type='radio' name='saveName' value='on' checked="checked">保存する
         <input type='radio' name='saveName' value='off'>保存しない
+      </div>
+      <br>
         <?php if($error['login'] === 'blank'): ?>
           <p class='error-display'>空欄があります。</p>
         <?php endif; ?>
         <?php if($error['login'] === 'faild'): ?>
           <p class='error-display'>間違っています。</p>
         <?php endif; ?>
-      <p>ログインしますか？</p>
-        <input type='submit' value='OK' />
+        <input type='submit' value='ログインする' />
     </form>
-    <a href='../join'>トップへ</a>
+    <br>
+    <a href='../join/signup.php'>新規登録へ</a>
   </body>
 </html>
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
@@ -66,4 +74,3 @@ print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-

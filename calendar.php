@@ -3,7 +3,6 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-
 if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
 } else {
   header('Location: join/login.php');
@@ -80,7 +79,6 @@ $user = $users->fetch();
             $defineWorkDay += 1;
           }
         }
-
       ?>
         <?php 
           fromDayToMinit($defineWorkDay);
