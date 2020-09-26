@@ -72,22 +72,39 @@ $defineWorkDay = 0;
         echo "</div>";
 
         }
-        for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
-          echo "<br>";
-          print($i);  // 日付出力
-          $week = $saveDay[$i];// 曜日を数字で格納
-          echo $dayOfTheWeek[$week];  // 日本語で曜日出力
-          if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
-            echo "休日"; 
-            if ($saveHolidayName[$i."d"] !== "") {  // 祝日名が格納されているか
-              $holidayName = $saveHolidayName[$i."d"];
-              echo $holidayName ; 
+    ?>
+<!-- // ===================================
+// カレンダー表示
+// ===================================-->
+    <table class='t' border=1>
+      <?php
+          for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
+            echo "<tr>";
+              echo "<td>";
+                print($i);  // 日付出力
+              echo "</td>";
+              $week = $saveDay[$i];// 曜日を数字で格納
+              echo "<td>";
+                echo $dayOfTheWeek[$week];  // 日本語で曜日出力
+              echo "</td>";
+
+            if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
+              echo "<td>";
+                echo "休"; 
+              echo "</td>";
+              if ($saveHolidayName[$i."d"] !== "") {  // 祝日名が格納されているか
+                $holidayName = $saveHolidayName[$i."d"];
+              echo "<td>";
+                echo $holidayName ; 
+              echo "</td>";
+              }
+            } else {  // 労働日の場合
+              $defineWorkDay += 1;
             }
-          } else {  // 労働日の場合
-            $defineWorkDay += 1;
+            echo "</tr>";
           }
-        }
         ?>
+    </table>
   </body>
 </html>
 
