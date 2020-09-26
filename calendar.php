@@ -27,6 +27,11 @@ $user = $users->fetch();
         本日：<?php  echo date("Y年m月d日"); ?>
       <a href= 'edit.php'>カレンダー編集</a>
       <a href= 'join/logout.php'>ログアウト</a>
+      <form action = "" method='POST'>
+        本日終了時点の労働時間入力
+        <input type='time' name='thisMonthWorkTime' value='00:00'> <!-- 不足時間 --> 
+        <input type='submit' name="calculate" value="計算する">
+      </form>
 
         <?php
         // カレンダー呼び出し
@@ -43,6 +48,28 @@ $user = $users->fetch();
         $saveHolidayName = $saveDataHolidayName->fetch();
 
         $defineWorkDay = 0;
+
+        if (!empty($_POST['calculate'])){
+            $inuptTimeMinit = changeMimit($_POST['thisMonthWorkTime']);
+            $today = (int)date("d");
+            $fromTodayWorkTime = 0;
+            for($i=1; $i < $today + 1; $i++) {
+              echo $i."<br>";
+              if ($saveCalendar[$i."d"] == 0 ) { // 平日だった場合
+                $fromTodayWorkTime += 8;
+                echo "work<br>";
+              }
+            }
+            var_dump($fromTodayWorkTime);
+            var_dump(((int)$saveCalendar['lackTime']));
+            var_dump($fromTodayWorkTime * 60);
+            var_dump($inuptTimeMinit);
+
+
+          $result = ((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)) - $inuptTimeMinit;
+          echo "結果";
+          echo $result;
+        }
 
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           echo "<br>";
