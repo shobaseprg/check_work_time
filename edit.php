@@ -8,8 +8,8 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
   header('Location: join/login.php');
   exit();
 }
-$year = $_POST['year'];
-$month = $_POST['month'];
+$year = date("Y");
+$month = date("m");
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 
 if (isset($_POST['confirm'])) {  // 確認するが押された場合
@@ -21,7 +21,6 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
     $_SESSION['lackTime'] = 0;
   }
   header('Location: check.php');
-
   exit();
 }
 // 祝日を取得
@@ -38,64 +37,47 @@ require('getHoliday.php');
 
   <body>
     <h1><?php echo "カレンダー編集" ?></h1>
-    本日：<?php  echo date("Y年m月d日"); ?>
-    <p>カレンダーを取得する。</p>
     <form action="" method="post">
-      <select name="year">
-        <option value=2020>2020</option>
-        <option value=2021>2021</option>
-        <option value=2022>2022</option>
-      </select>
-
-      <select name="month">
-        <option value=01>1</option>
-        <option value=02>2</option>
-        <option value=03>3</option>
-        <option value=04>4</option>
-        <option value=05>5</option>
-        <option value=06>6</option>
-        <option value=07>7</option>
-        <option value=08>8</option>
-        <option value=09>9</option>
-        <option value=10>10</option>
-        <option value=11>11</option>
-        <option value=12>12</option>
-      </select>
-      <input type="submit" name='get' value="取得する">
-      <?php echo $targetDay; ?>
+      <input type="submit" name='get' value="今月のカレンダーを取得する(※祝日はgoogleカレンダーに基づきます。)">
     </form>
-
+    <br>
     <form action="" method="post">
-      <input type="submit" name='recall' value="呼び出す">
+      <input type="submit" name='recall' value="保存したカレンダーを呼び出す">
     </form>
-
       <!-- ===================================
       呼び出した時
       =================================== -->
 
     <?php if (!empty($_POST['recall'])) : ?>  
-      <form action='' method="post">
-        <?php
-        // データーベース 呼び出し
-        require('getDB.php');
-        for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
-          print($i);  // 日付出力
-          $week = $saveDay[$i];// 曜日を数字で格納
-          echo "<input type='hidden' name='week[]' value='".$week."' />"; 
-          echo $dayOfTheWeek[$week];  // 日本語で曜日出力
-          if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
-            echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'><br>"; 
-            if ($saveHolidayName[$i."d"] !== "") {  // 祝日を回して調査日と合致するか確認
-              $holidayName = $saveHolidayName[$i."d"];
-              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
-              echo $holidayName."<br>";
+      <table class='t' border=1>
+        <form action='' method="post">
+            <?php
+            // データーベース 呼び出し
+            require('getDB.php');
+            for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
+              echo "<tr>";
+              echo "<td>".$i."</td>";
+              echo "<td>";
+                $week = $saveDay[$i];// 曜日を数字で格納
+                echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+                echo "<td>".$dayOfTheWeek[$week]."</td>";  // 日本語で曜日出力
+              if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
+                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
+                if ($saveHolidayName[$i."d"] !== "") {  // 祝日を回して調査日と合致するか確認
+                  $holidayName = $saveHolidayName[$i."d"];
+                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+                  echo "<td>".$holidayName."</td>";
+                }
+              } else {
+                echo "<td><input type='checkbox' name='holiday[]' value='".$i."'></td>";
+              }
+              echo "</tr>";
             }
-          } else {
-            echo "<input type='checkbox' name='holiday[]' value='".$i."'><br>";
-          }
-        }
-        $saveLackTimeHour = changeHour($saveCalendar['lackTime']);
-      ?>
+            $saveLackTimeHour = changeHour($saveCalendar['lackTime']);
+
+          ?>
+      </table>
+
         <p>前月の不足時間</p>
         <?php echo $saveLackTimeHour ; ?>
           <div id="lackTimeBottun">
