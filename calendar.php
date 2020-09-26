@@ -10,8 +10,6 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
   header('Location: join/login.php');
   exit();
 }
-
-$defineWorkDay = 0;
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +25,7 @@ $defineWorkDay = 0;
       <a href= 'edit.php'>カレンダー編集</a>
       <a href= 'join/logout.php'>ログアウト</a>
       <br>
+      <br>
       <div class="inputTime">
         <form action = "" method='POST'>
         <?php  echo date("Y年m月d日"); ?>終了時点の労働時間入力
@@ -36,6 +35,9 @@ $defineWorkDay = 0;
         </form>
       </div>
     <?php
+    // =================================== 
+    // 計算結果出力
+    // ===================================
       if (!empty($_POST['calculate'])){
         $today = (int)date("d");
         $fromTodayWorkTime = 0;
@@ -45,12 +47,18 @@ $defineWorkDay = 0;
             }
           }
         $inuptTimeMinit = changeMimit($_POST['lackTimeHour'], $_POST['lackTimeMinit']);
-
         $result = ((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)) - $inuptTimeMinit;
-        echo "結果";
-        echo $result;
+        // 不足時間  +  本日までの労働時間  +  入力された時間
+        if ($result < 0) {
+          $is_over = "超過";
+        } else {
+          $is_over = "不足";
         }
-
+        $resultAbs = abs($result); // 自然数に
+        echo "<br><div class='result'>".changeHour($resultAbs).$is_over."</div>";
+      }
+      
+      $defineWorkDay = 0;
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           echo "<br>";
           print($i);  // 日付出力
