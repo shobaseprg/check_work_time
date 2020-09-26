@@ -19,19 +19,22 @@ $defineWorkDay = 0;
   <head>
     <meta charset="UTF-8">
     <title>check_work_time</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <h1><?php echo $_SESSION['userName']."さん"; ?></h1>
       <a href= 'edit.php'>カレンダー編集</a>
       <a href= 'join/logout.php'>ログアウト</a>
-      <form action = "" method='POST'>
-      本日：<?php  echo date("Y年m月d日"); ?>終了時点の労働時間入力
-        <input type='number' name='lackTimeHour' min=0 max= 999 value=0>時間 <!-- 不足時間 -->
-        <input type='number' name='lackTimeMinit' min=0 max=60 value=0>分 <!-- 不足分 -->
-        <input type='submit' name="calculate" value="計算する">
-      </form>
+      <br>
+      <div class="inputTime">
+        <form action = "" method='POST'>
+        <?php  echo date("Y年m月d日"); ?>終了時点の労働時間入力
+          <input type='number' name='lackTimeHour' min=0 max= 999 value=0>時間 <!-- 不足時間 -->
+          <input type='number' name='lackTimeMinit' min=0 max=60 value=0>分 <!-- 不足分 -->
+          <input type='submit' name="calculate" value="計算する">
+        </form>
+      </div>
     <?php
       if (!empty($_POST['calculate'])){
         $today = (int)date("d");

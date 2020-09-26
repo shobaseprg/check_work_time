@@ -15,3 +15,9 @@
 .non-show{
 	display: none;
 }
+
+.inputTime{
+	border: solid 1px;
+	display:inline-block;
+	padding:5px;
+}
