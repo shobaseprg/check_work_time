@@ -95,20 +95,9 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
 
     <?php if (!empty($_POST['recall'])) : ?>  
       <form action='' method="post">
-      <?php
-        // カレンダー呼び出し
-        $saveDataCalendar = $db->prepare('SELECT * FROM calendar WHERE user_id = ?');
-        $saveDataCalendar->execute(array($_SESSION['userId']));
-        $saveCalendar = $saveDataCalendar->fetch();
-        // 曜日呼び出し
-        $saveDataDay = $db->prepare('SELECT * FROM day WHERE user_id = ?');
-        $saveDataDay->execute(array($_SESSION['userId']));
-        $saveDay = $saveDataDay->fetch();
-        // 祝日名呼び出し
-        $saveDataHolidayName = $db->prepare('SELECT * FROM holidayName WHERE user_id = ?');
-        $saveDataHolidayName->execute(array($_SESSION['userId']));
-        $saveHolidayName = $saveDataHolidayName->fetch();
-
+        <?php
+        // データーベース 呼び出し
+        require('getDB.php');
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           print($i);  // 日付出力
           $week = $saveDay[$i];// 曜日を数字で格納
