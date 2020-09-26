@@ -40,7 +40,7 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   lastday=?
   WHERE user_id =?');
 
-  $saveCalendar->execute(array($_SESSION['lackTimeMinit'], $_SESSION['year'],$_SESSION['month'], 
+  $saveCalendar->execute(array($_SESSION['lackTime'], $_SESSION['year'],$_SESSION['month'], 
   $holidayArray[0],$holidayArray[1],  $holidayArray[2],$holidayArray[3],  $holidayArray[4],
   $holidayArray[5],$holidayArray[6],  $holidayArray[7],$holidayArray[8],  $holidayArray[9],
   $holidayArray[10],$holidayArray[11],  $holidayArray[12],$holidayArray[13],  $holidayArray[14],
@@ -122,9 +122,9 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     <br>
     <?php 
       echo "所定労働日数  ".$defineWorkDay;
-      echo "所定労働時間  ".changeMimit($defineWorkTime);
-      echo "先月不足時間  ".$_SESSION['lackTimeMinit'];
-      echo "必要労働時間".(changeMimit($defineWorkTime) + $_SESSION['lackTimeMinit']);
+      echo "所定労働時間  ".changeMimit($defineWorkTime, 0);
+      echo "先月不足時間  ".$_SESSION['lackTime'];
+      echo "必要労働時間".(changeMimit($defineWorkTime, 0) + $_SESSION['lackTime']);
     ?>
     <br>
     <a href='edit.php'>戻る</a>

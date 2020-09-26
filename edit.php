@@ -16,9 +16,9 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
   $_SESSION = $_POST;
   $_SESSION['holiday'] = $_POST['holiday'];
   if (!empty($_POST['lackTimeHour'])) {
-    $_SESSION['lackTimeMinit'] = changeMimit($_POST['lackTimeHour']);
+    $_SESSION['lackTime'] = changeMimit($_POST['lackTimeHour'], $_POST['lackTimeMinit']);
   } else {
-    $_SESSION['lackTimeMinit'] = 0;
+    $_SESSION['lackTime'] = 0;
   }
   header('Location: check.php');
 
@@ -133,7 +133,8 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
           不足時間を変更する
         </div>
         <div id="lackTimeInputForm" class='non-show'>
-          <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 --> 
+          <input type='number' name='lackTimeHour' min=0 value=0> <!-- 不足時間 -->
+          <input type='number' name='lackTimeMinit' min=0 max=60 value=0> <!-- 不足分 -->
         </div>
         <input type='hidden' name='year' value="<?php echo $saveCalendar['year'] ?>" />
         <input type='hidden' name='month' value="<?php echo $saveCalendar['month'] ?>" />
@@ -187,7 +188,8 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         }
         ?>
         <p>前月の不足時間</p>
-        <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 -->
+        <input type='number' name='lackTimeHour' min=0 value=0> <!-- 不足時間 -->
+        <input type='number' name='lackTimeMinit' min=0 max=60 value=0> <!-- 不足分 -->
         <input type='hidden' name='year' value="<?php echo $year ?>" />
         <input type='hidden' name='month' value="<?php echo $month ?>" />
         <input type='hidden' name='lastday' value="<?php echo $lastday ?>" />

@@ -29,7 +29,8 @@ $user = $users->fetch();
       <a href= 'join/logout.php'>ログアウト</a>
       <form action = "" method='POST'>
         本日終了時点の労働時間入力
-        <input type='time' name='thisMonthWorkTime' value='00:00'> <!-- 不足時間 --> 
+        <input type='number' name='lackTimeHour' min=0 value=0> <!-- 不足時間 -->
+        <input type='number' name='lackTimeMinit' min=0 max=60 value=0> <!-- 不足分 -->
         <input type='submit' name="calculate" value="計算する">
       </form>
 
@@ -50,21 +51,14 @@ $user = $users->fetch();
         $defineWorkDay = 0;
 
         if (!empty($_POST['calculate'])){
-            $inuptTimeMinit = changeMimit($_POST['thisMonthWorkTime']);
             $today = (int)date("d");
             $fromTodayWorkTime = 0;
             for($i=1; $i < $today + 1; $i++) {
-              echo $i."<br>";
               if ($saveCalendar[$i."d"] == 0 ) { // 平日だった場合
                 $fromTodayWorkTime += 8;
-                echo "work<br>";
               }
             }
-            var_dump($fromTodayWorkTime);
-            var_dump(((int)$saveCalendar['lackTime']));
-            var_dump($fromTodayWorkTime * 60);
-            var_dump($inuptTimeMinit);
-
+        $inuptTimeMinit = changeMimit($_POST['lackTimeHour'], $_POST['lackTimeMinit']);
 
           $result = ((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)) - $inuptTimeMinit;
           echo "結果";

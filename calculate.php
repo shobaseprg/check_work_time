@@ -4,9 +4,8 @@ require('dbconnect.php');
 
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
-function changeMimit($hourAndMinitTime) {
-  $splitTime = explode(":",$hourAndMinitTime);
-  return (intval($splitTime[0] * 60)) + intval($splitTime[1]);
+function changeMimit($hour, $minit) {
+  return ($hour * 60) + $minit;
 }
 
 function changeHour($minitTime) {
