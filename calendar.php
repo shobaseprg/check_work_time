@@ -34,12 +34,11 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
           <input type='submit' name="calculate" value="計算する">
         </form>
       </div>
-    <?php
-    // =================================== 
+    <!-- // =================================== 
     // 計算結果出力
-    // ===================================
-      if (!empty($_POST['calculate'])){
-        $today = (int)date("d");
+    // =================================== -->
+    <?php if (!empty($_POST['calculate'])) :?>
+      <?php $today = (int)date("d");
         $fromTodayWorkTime = 0;
         for($i=1; $i < $today + 1; $i++) {
           if ($saveCalendar[$i."d"] == 0 ) { // 平日だった場合
@@ -55,8 +54,9 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
           $is_over = "不足";
         }
         $resultAbs = abs($result); // 自然数に
-        echo "<br><div class='result'>".changeHour($resultAbs).$is_over."</div>";
-      }
+      ?>
+      <br><div class='result'><?php echo changeHour($resultAbs).$is_over ?></div>;
+    <? endif; ?>
       
       $defineWorkDay = 0;
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
@@ -74,7 +74,6 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
             $defineWorkDay += 1;
           }
         }
-      ?>
         <?php 
           fromDayToMinit($defineWorkDay);
           echo "所定労働日数  ".$defineWorkDay;
