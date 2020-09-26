@@ -12,7 +12,7 @@ function changeMimit($hourAndMinitTime) {
 function changeHour($minitTime) {
   $hour = floor($minitTime / 60);
   $minit = $minitTime % 60;
-  return $hour.":".$minit;
+  return $hour."時間".$minit."分";
 }
 
 ?>

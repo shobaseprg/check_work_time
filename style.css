@@ -1,3 +1,17 @@
 .error-display{
 	color:red;
 }
+
+#lackTimeBottun{
+	border:solid 1px;
+	width: 200px;
+	text-align: center;
+}
+
+.show{
+	display:block;
+}
+
+.non-show{
+	display: none;
+}

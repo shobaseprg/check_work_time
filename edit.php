@@ -53,7 +53,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
   <head>
     <meta charset="UTF-8">
     <title>check_work_time</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
@@ -90,28 +90,25 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
     </form>
 
       <!-- ===================================
-      保存を呼び出した時
+      呼び出した時
       =================================== -->
 
     <?php if (!empty($_POST['recall'])) : ?>  
       <form action='' method="post">
       <?php
-      echo "<pre>";
+        // カレンダー呼び出し
         $saveDataCalendar = $db->prepare('SELECT * FROM calendar WHERE user_id = ?');
         $saveDataCalendar->execute(array($_SESSION['userId']));
         $saveCalendar = $saveDataCalendar->fetch();
-
-
+        // 曜日呼び出し
         $saveDataDay = $db->prepare('SELECT * FROM day WHERE user_id = ?');
         $saveDataDay->execute(array($_SESSION['userId']));
         $saveDay = $saveDataDay->fetch();
-
-
+        // 祝日名呼び出し
         $saveDataHolidayName = $db->prepare('SELECT * FROM holidayName WHERE user_id = ?');
         $saveDataHolidayName->execute(array($_SESSION['userId']));
         $saveHolidayName = $saveDataHolidayName->fetch();
 
-      echo "</pre>";
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           print($i);  // 日付出力
           $week = $saveDay[$i];// 曜日を数字で格納
@@ -131,7 +128,13 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         $saveLackTimeHour = changeHour($saveCalendar['lackTime']);
       ?>
         <p>前月の不足時間</p>
-        <input type='time' name='lackTimeHour' value="<?php echo $saveLackTimeHour ?>" />
+        <?php echo $saveLackTimeHour ; ?>
+          <div id="lackTimeBottun">
+          不足時間を変更する
+        </div>
+        <div id="lackTimeInputForm" class='non-show'>
+          <input type='time' name='lackTimeHour' value='00:00'> <!-- 不足時間 --> 
+        </div>
         <input type='hidden' name='year' value="<?php echo $saveCalendar['year'] ?>" />
         <input type='hidden' name='month' value="<?php echo $saveCalendar['month'] ?>" />
         <input type='hidden' name='lastday' value="<?php echo $saveCalendar['lastday'] ?>" />
@@ -143,7 +146,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
     <?php endif; ?>
 
       <!-- ===================================
-      取得を呼び出した時
+      取得した時
       =================================== -->
 
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
@@ -172,7 +175,6 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
               $holidayName = $row->summary;
               echo "<input type='checkbox' name='holiday[]' value=".$i." checked='checked'>"; 
               echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
-
               echo $holidayName."<br>";
               $isHoliday = "ON";
               break;
@@ -195,6 +197,7 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <input type='submit' name='confirm' value="確認する" />
       </form>
     <?php endif; ?>
+    <script src="button.js"></script>
   </body>
 </html>
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
