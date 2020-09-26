@@ -1,9 +1,7 @@
 <?php  
 session_start();
 require('../dbconnect.php');
-// ini_set('display_errors', 1);
-// $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
 session_destroy();
 $_SESSION = array();
 if (!empty($_POST)) {

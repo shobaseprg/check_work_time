@@ -79,7 +79,11 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     $holidayNameArray[26], $holidayNameArray[27], $holidayNameArray[28], $holidayNameArray[29], $holidayNameArray[30], 
     $_SESSION['userId']
   ));
-  header('Location: join/login.php');
+  $stash_user_id = $_SESSION['userId'];
+  session_destroy();
+  $_SESSION = array();
+  $_SESSION['userId'] = $stash_user_id;
+  header('Location: calendar.php');
   exit();
 }
 ?>
