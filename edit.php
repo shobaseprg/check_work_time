@@ -99,15 +99,17 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         $saveDataCalendar = $db->prepare('SELECT * FROM calendar WHERE user_id = ?');
         $saveDataCalendar->execute(array($_SESSION['userId']));
         $saveCalendar = $saveDataCalendar->fetch();
+        print_r($saveCalendar);
 
         $saveDataDay = $db->prepare('SELECT * FROM day WHERE user_id = ?');
         $saveDataDay->execute(array($_SESSION['userId']));
         $saveDay = $saveDataDay->fetch();
+        print_r($saveDay);
 
         $saveDataHolidayName = $db->prepare('SELECT * FROM holidayName WHERE user_id = ?');
         $saveDataHolidayName->execute(array($_SESSION['userId']));
         $saveHolidayName = $saveDataHolidayName->fetch();
-
+        print_r($saveHolidayName);
       echo "</pre>";
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           print($i);  // 日付出力

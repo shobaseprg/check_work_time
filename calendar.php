@@ -26,7 +26,7 @@ if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
   </head>
 
   <body>
-  <h1><?php echo $user['name']."さん"; ?></h1>
+  <h1><?php echo $user['name']."さんようこそ"; ?></h1>
     本日：<?php  echo date("Y年m月d日"); ?>
   <a href= 'edit.php'>カレンダー編集</a>
   <a href= 'join/login.php'>ログインへ</a>
