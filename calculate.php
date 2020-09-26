@@ -15,4 +15,7 @@ function changeHour($minitTime) {
   return $hour."時間".$minit."分";
 }
 
+function fromDayToMinit($day) {
+  return $day * 8 * 60;
+}
 ?>
