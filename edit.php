@@ -3,15 +3,16 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-if (empty($_SESSION['userId'])) {
-  header('Location:join/login.php');
+if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
+} else {
+  header('Location: join/login.php');
   exit();
 }
 $year = $_POST['year'];
 $month = $_POST['month'];
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 
-if (isset($_POST['submit'])) {  // 登録ボタンが押された場合
+if (isset($_POST['confirm'])) {  // 確認するが押された場合
   $_SESSION = $_POST;
   $_SESSION['holiday'] = $_POST['holiday'];
   if (!empty($_POST['lackTimeHour'])) {
@@ -99,17 +100,17 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         $saveDataCalendar = $db->prepare('SELECT * FROM calendar WHERE user_id = ?');
         $saveDataCalendar->execute(array($_SESSION['userId']));
         $saveCalendar = $saveDataCalendar->fetch();
-        print_r($saveCalendar);
+
 
         $saveDataDay = $db->prepare('SELECT * FROM day WHERE user_id = ?');
         $saveDataDay->execute(array($_SESSION['userId']));
         $saveDay = $saveDataDay->fetch();
-        print_r($saveDay);
+
 
         $saveDataHolidayName = $db->prepare('SELECT * FROM holidayName WHERE user_id = ?');
         $saveDataHolidayName->execute(array($_SESSION['userId']));
         $saveHolidayName = $saveDataHolidayName->fetch();
-        print_r($saveHolidayName);
+
       echo "</pre>";
         for($i=1; $i < $saveCalendar['lastday'] + 1; $i++) {
           print($i);  // 日付出力
@@ -135,9 +136,15 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <input type='hidden' name='month' value="<?php echo $saveCalendar['month'] ?>" />
         <input type='hidden' name='lastday' value="<?php echo $saveCalendar['lastday'] ?>" />
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
-        <input type='submit' name='submit' value="確認する" />
+        <input type='hidden' name='userName' value="<?php echo $_SESSION['userName'] ?>" />
+        <input type='hidden' name='time' value="<?php echo $_SESSION['time'] ?>" />
+        <input type='submit' name='confirm' value="確認する" />
       </form>
     <?php endif; ?>
+
+      <!-- ===================================
+      取得を呼び出した時
+      =================================== -->
 
     <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
       <form action='' method="post">
@@ -183,64 +190,13 @@ if ($date = file_get_contents($url.http_build_query($query), true)) {
         <input type='hidden' name='month' value="<?php echo $month ?>" />
         <input type='hidden' name='lastday' value="<?php echo $lastday ?>" />
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
-        <input type='submit' name='submit' value="確認する" />
+        <input type='hidden' name='userName' value="<?php echo $_SESSION['userName'] ?>" />
+        <input type='hidden' name='time' value="<?php echo $_SESSION['time'] ?>" />
+        <input type='submit' name='confirm' value="確認する" />
       </form>
     <?php endif; ?>
   </body>
 </html>
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "results";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "start";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "end";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "targetDay";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_POST";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($date);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
 $word = "_SESSION";
@@ -249,3 +205,4 @@ print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
+

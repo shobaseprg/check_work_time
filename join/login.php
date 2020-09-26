@@ -1,10 +1,6 @@
 <?php 
 session_start();
 require('../dbconnect.php');
-// ini_set('display_errors', 1);
-// $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
 
 if ($_COOKIE !== '')  {
   $name = $_COOKIE['name'];
@@ -16,16 +12,17 @@ if(!empty($_POST)) {
     $user = $loginWords->fetch();
       if ($user) {
         $_SESSION['userId'] = $user['id'];
+        $_SESSION['userName'] = $user['name'];
         $_SESSION['time'] = time();
           if ($_POST['saveName'] === 'on') {
             setcookie('name',  $_POST['name'], time()+60*60*24*14);
           } else {
             setcookie('name', "", time()-60);
           }
-          header('Location: ../calendar.php');
+        header('Location: ../calendar.php');
       } else {
         $error['login'] = 'faild';
-      }
+      }     
   } else {
     $error['login'] = 'blank';
   }
@@ -61,46 +58,12 @@ if(!empty($_POST)) {
     <a href='../join'>トップへ</a>
   </body>
 </html>
-
 <!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
 <?php
-echo '<pre><br>---------------【_POST】--------------------<br>';
-print_r($_POST);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△
-
-//▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-echo '<pre><br>---------------【_SESSION】--------------------<br>';
-print_r($_SESSION);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_COOKIE";
+$word = "_SESSION";
 echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
 print_r($$word);
 echo '</pre>';
 ?>
 <!-- //△△△△△△△----デバッグ----△△△△△△△ -->
 
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_COOKIE['name']";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_COOKIE['password']";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
