@@ -82,8 +82,8 @@ if (!empty($_POST)) {
         <?php if($error['name'] === 'blank'): ?>
           <p class='error-display'>passwordを入力してください</p>
         <?php endif; ?>
-      <p>登録しますか？</p>
-      <div><input type="submit" value="OK" /></div>
+      <br>
+      <div><input type="submit" value="登録する" /></div>
   </body>
 </html>
 

@@ -97,9 +97,6 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
 
   <body>
     <h1>この設定で登録しますか？</h1>
-    <p>先月不足時間</p>
-    <?php echo $_SESSION['lackTimeMinit'] ;?>
-    <p>設定年月日</p>
     <?php echo $_SESSION['year']."年".$_SESSION['month']."月" ;?>
 
     <?php $i = 0; 
