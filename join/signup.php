@@ -12,8 +12,9 @@ if (!empty($_POST)) {
   if(strlen($_POST['password']) < 4 || strlen($_POST['password']) >11){
       $error['password'] = 'length';
   }
-  if($_POST['password'] ==="") {
-    $error['password'] = 'blank';
+
+  if($_POST['approve'] ==!"checed") {
+    $error['approve'] = 'blank';
   }
   if(empty($error)) {
     // 既存のユーザーとの重複確認
@@ -65,7 +66,7 @@ if (!empty($_POST)) {
     <form action="" method="post">
       <div>
         name
-          <input type="text" name="name" maxlength="10" value="<?php print(htmlspecialchars($_POST['name'], ENT_QUOTES));?>" />
+        <input type="text" name="name" maxlength="10" value="<?php print(htmlspecialchars($_POST['name'], ENT_QUOTES));?>" />
       </div>
         <?php if($error['name'] === 'blank'): ?>
           <p class='error-display'>nameを入力してください</p>
@@ -80,10 +81,16 @@ if (!empty($_POST)) {
         <?php if($error['password'] === 'length'): ?>
           <p class='error-display'>*パスワードを4文字以上、１０文字以内で入力してください</p>
         <?php endif; ?>
-        <?php if($error['name'] === 'blank'): ?>
-          <p class='error-display'>passwordを入力してください</p>
-        <?php endif; ?>
       <br>
+        ・突如サービスが終了する可能性がございます。<br>
+        ・算出された数値はあまり鵜呑みにしないでください。<br>
+        ・パスワードは、他のサイト等で使用していないものを使用してください。<br><br>
+
+        同意する<input type="checkbox" name="approve" value="checked">
+      <?php if($error['approve'] === 'blank'): ?>
+        <p class='error-display'>ですよね</p>
+      <?php endif; ?>
+      <br><br>
       <div><input type="submit" value="登録する" /></div>
   </body>
 </html>
