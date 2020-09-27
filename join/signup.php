@@ -16,6 +16,7 @@ if (!empty($_POST)) {
     $error['password'] = 'blank';
   }
   if(empty($error)) {
+    // 既存のユーザーとの重複確認
     $member = $db->prepare('SELECT COUNT(*) as cnt FROM users WHERE name = ?');
     $member->execute(array($_POST['name']));
     $record = $member->fetch();
@@ -86,13 +87,3 @@ if (!empty($_POST)) {
       <div><input type="submit" value="登録する" /></div>
   </body>
 </html>
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_SESSION";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-

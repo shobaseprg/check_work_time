@@ -5,11 +5,7 @@ require('calculate.php');
 require('getDB.php');
 
 // ログイン処理
-if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
-} else {
-  header('Location: join/login.php');
-  exit();
-}
+sessionCheck($_SESSION['userId'], $_SESSION['time']);
 
 $defineWorkDay = 0;
 ?>
@@ -107,13 +103,3 @@ $defineWorkDay = 0;
     </table>
   </body>
 </html>
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_SESSION";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-

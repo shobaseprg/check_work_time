@@ -3,11 +3,8 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
-} else {
-  header('Location: join/login.php');
-  exit();
-}
+sessionCheck($_SESSION['userId'], $_SESSION['time']);
+
 $year = date("Y");
 $month = date("m");
 $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
@@ -23,8 +20,6 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
   header('Location: check.php');
   exit();
 }
-// 祝日を取得
-require('getHoliday.php');
 ?>
 
 <!DOCTYPE html>
@@ -99,47 +94,47 @@ require('getHoliday.php');
       取得した時
       =================================== -->
 
-    <?php if (!empty($_POST['get'])) : ?>  <!-- 取得が押された時 -->
-      <form action='' method="post">
-        <!-- 日付のチェックボックス -->
-      <table class="t" border=1>
-        <?php for($i=1; $i < $lastday + 1; $i++) {
-        echo "<tr>";
-          echo "<td>".$i."</td>";  // 日付出力
-          $timestamp = mktime(0,0,0,$month,$i,$year);
-          $week = date("w", $timestamp);  // 曜日を数字で格納
-          echo "<input type='hidden' name='week[]' value='".$week."' />"; 
-          echo "<td>".$dayOfTheWeek[$week]."</td>";  // 日本語で曜日出力
+    <?php if (!empty($_POST['get'])) : ?>  
+      <?php require('getHoliday.php'); ?><!-- 祝日を取得 -->
+      <form action='' method="post"><!-- 日付のチェックボックス -->
+        <table class="t" border=1>
+          <?php for($i=1; $i < $lastday + 1; $i++) {
+            echo "<tr>";
+              echo "<td>".$i."</td>";  // 日付出力
+              $timestamp = mktime(0,0,0,$month,$i,$year);
+              $week = date("w", $timestamp);  // 曜日を数字で格納
+              echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+              echo "<td>".$dayOfTheWeek[$week]."</td>";  // 日本語で曜日出力
 
-          if ($i < 10) {
-            $targetDay = $year."-".$month."-0".$i;  // 2020-9-01の形で格納
-          } else {
-            $targetDay = $year."-".$month."-".$i;  // 日付が十桁以上ならそのまま
-          }
+              if ($i < 10) {
+                $targetDay = $year."-".$month."-0".$i;  // 2020-9-01の形で格納
+              } else {
+                $targetDay = $year."-".$month."-".$i;  // 日付が十桁以上ならそのまま
+              }
 
-          if ($week == 0  || $week == 6 ) { // 土日だった場合
-            echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
-            continue;
-            // 土日だった場合は、ループをスキップ
+              if ($week == 0  || $week == 6 ) { // 土日だった場合
+                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
+                continue;
+                // 土日だった場合は、ループをスキップ
+              }
+              foreach($date->items as $row) {
+                if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
+                  $holidayName = $row->summary;
+                  echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
+                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+                  echo "<td>".$holidayName."</td>";
+                  $isHoliday = "ON";
+                  break;
+                }
+              }
+              if ($isHoliday !=="ON") {  // 土日でも祝日でもなかった場合
+                echo "<td><input type='checkbox' name='holiday[]' value='".$i."'></td>";
+              }
+              $isHoliday = "OFF";
+            echo "</tr>";
           }
-          foreach($date->items as $row) {
-            if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
-              $holidayName = $row->summary;
-              echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
-              echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
-              echo "<td>".$holidayName."</td>";
-              $isHoliday = "ON";
-              break;
-            }
-          }
-          if ($isHoliday !=="ON") {  // 土日でも祝日でもなかった場合
-            echo "<td><input type='checkbox' name='holiday[]' value='".$i."'></td>";
-          }
-          $isHoliday = "OFF";
-        echo "</tr>";
-        }
-        ?>
-        </table>
+          ?>
+          </table>
         <p>前月の不足時間</p>
         <input type='number' name='lackTimeHour' min=0 max=999 value=0>時間<!-- 不足時間 -->
         <input type='number' name='lackTimeMinit' min=0 max=60 value=0>分 <!-- 不足分 -->
@@ -155,12 +150,3 @@ require('getHoliday.php');
     <script src="button.js"></script>
   </body>
 </html>
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_SESSION";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-

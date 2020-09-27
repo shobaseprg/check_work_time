@@ -3,11 +3,8 @@ session_start();
 require('dbconnect.php');
 require('calculate.php');
 
-if (isset($_SESSION['userId']) && $_SESSION['time'] + 3600 > time()) {
-} else {
-  header('Location: join/login.php');
-  exit();
-}
+sessionCheck($_SESSION['userId'], $_SESSION['time']);
+
 $defineWorkTime = 0;
 
 // 休日用配列を作成
@@ -96,32 +93,28 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
   </head>
 
   <body>
-    <h1>この設定で登録しますか？</h1>
     <?php echo $_SESSION['year']."年".$_SESSION['month']."月" ;?>
 
-    <?php $i = 0; 
-    $defineWorkTime = 0;
-    $defineWorkDay = 0;
-    ?>
-
-    <?php foreach ($_SESSION['week'] as $week) : ?>
-      <p><?php echo ($i + 1)."日"."  ".$dayOfTheWeek[$week] ;?>
-        <?php if(in_array(($i + 1), $_SESSION['holiday'])) { // 配列の要素に合致するものがあるか(休日かどうか)
-          echo "休日  ";
-        } else {
-          $defineWorkTime += 8;
-          $defineWorkDay += 1;
-        }
-        echo $_SESSION['holidayName'][$i + 1];  // 該当日が祝日に合致したら
-        ?>
-      <?php  $i++; ?>
-    <?php endforeach ;?>
-    <br>
     <?php 
-      echo "所定労働日数  ".$defineWorkDay;
-      echo "所定労働時間  ".changeMimit($defineWorkTime, 0);
-      echo "先月不足時間  ".$_SESSION['lackTime'];
-      echo "必要労働時間".(changeMimit($defineWorkTime, 0) + $_SESSION['lackTime']);
+    $i = 0; 
+    ?>
+    <table class="t" border=1>
+      <?php foreach ($_SESSION['week'] as $week) : ?>
+        <tr>
+        <?php 
+          echo "<td>".($i + 1)."</td><td>".$dayOfTheWeek[$week]."</td>" ;
+            if(in_array(($i + 1), $_SESSION['holiday'])) { // 配列の要素に合致するものがあるか(休日かどうか)
+              echo "<td>休</td>";
+            } 
+            if ($_SESSION['holidayName'][$i + 1] ==! "") {
+              echo "<td>".$_SESSION['holidayName'][$i + 1]."</dt>";  // 該当日が祝日に合致したら
+            }
+          $i++; ?>
+        </tr>
+        <?php endforeach ;?>
+    </table>
+    <?php 
+      echo "先月不足時間  ".changeHour($_SESSION['lackTime']);
     ?>
     <br>
     <a href='edit.php'>戻る</a>
@@ -130,13 +123,3 @@ if (isset($_POST['approve'])) {  // 登録ボタンが押された場合
     </form> 
   </body>
 </html>
-
-<!-- //▽▽▽▽▽▽▽----デバッグ----▽▽▽▽▽▽▽ -->
-<?php
-$word = "_SESSION";
-echo '<pre><br>---------------【(＄)'.$word.'】--------------------<br>';
-print_r($$word);
-echo '</pre>';
-?>
-<!-- //△△△△△△△----デバッグ----△△△△△△△ -->
-
