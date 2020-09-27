@@ -1,0 +1,42 @@
+.error-display{
+	color:red;
+}
+
+#lackTimeBottun{
+	border:solid 1px;
+	width: 200px;
+	text-align: center;
+}
+
+.show{
+	display:block;
+}
+
+.non-show{
+	display: none;
+}
+
+.inputTime{
+	border: solid 1px;
+	display:inline-block;
+	padding:5px;
+}
+
+.result{
+	color: red;
+	border: solid 1px;
+	display:inline-block;
+	padding:5px;
+	margin-top: 10px;
+}
+
+.detail{
+	border: solid 1px;
+	display:inline-block;
+	padding:5px;
+	margin-top: 10px;
+}
+
+.t{
+	margin-top: 10px;
+}
