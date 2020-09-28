@@ -60,7 +60,7 @@ $defineWorkDay = 0;
         $resultAbs = abs($result);
         echo "<br><div class='result'>".changeHour($resultAbs).$is_over."</div><br>";
         echo "<div class='detail'>";
-        echo "本日までの所定労働日数：".$fromTodayWorkDay."日<br> ";
+        echo "本日までの所定労働日数(休日、有給を除く日数）：".$fromTodayWorkDay."日<br> ";
         echo "本日までの所定労働時間：".$fromTodayWorkTime."時間00分<br>";
         echo "先月までの不足時間：".changeHour((int)$saveCalendar['lackTime'])."<br>";
         echo "本日までの必要労働時間：".changeHour(((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)))."<br>";

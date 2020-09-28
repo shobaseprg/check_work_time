@@ -39,6 +39,10 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
     <form action="" method="post">
       <input type="submit" name='recall' value="保存したカレンダーを呼び出す">
     </form>
+    <br>
+    ※休日（有給含む）にチェックを入れてくください。
+    （後から編集可能です。）
+    <br>
       <!-- ===================================
       呼び出した時
       =================================== -->
@@ -144,6 +148,7 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
         <input type='hidden' name='userId' value="<?php echo $_SESSION['userId'] ?>" />
         <input type='hidden' name='userName' value="<?php echo $_SESSION['userName'] ?>" />
         <input type='hidden' name='time' value="<?php echo $_SESSION['time'] ?>" />
+        <br><br>
         <input type='submit' name='confirm' value="確認する" />
       </form>
     <?php endif; ?>
