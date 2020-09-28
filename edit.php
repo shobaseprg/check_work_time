@@ -39,15 +39,16 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
     <form action="" method="post">
       <input type="submit" name='recall' value="保存したカレンダーを呼び出す">
     </form>
-    <br>
-    ※休日（有給含む）にチェックを入れてくください。
-    （後から編集可能です。）
-    <br>
+
       <!-- ===================================
       呼び出した時
       =================================== -->
 
     <?php if (!empty($_POST['recall'])) : ?>  
+      <br>
+        ※休日（有給含む）にチェックを入れてくください。
+        （後から編集可能です。）
+      <br>
       <table class='t' border=1>
         <form action='' method="post">
             <?php
@@ -99,6 +100,10 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
       =================================== -->
 
     <?php if (!empty($_POST['get'])) : ?>  
+      <br>
+        ※休日（有給含む）にチェックを入れてくください。
+        （後から編集可能です。）
+      <br>
       <?php require('getHoliday.php'); ?><!-- 祝日を取得 -->
       <form action='' method="post"><!-- 日付のチェックボックス -->
         <table class="t" border=1>
