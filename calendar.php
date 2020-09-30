@@ -60,6 +60,7 @@ $defineWorkDay = 0;
         }
         $resultAbs = abs($result);
         echo "<br><div class='result'>".changeHour($resultAbs).$is_over."</div><br>";
+
         echo "<div class='detail'>";
         echo "本日までの所定労働日数(休日、有給を除く日数）：".$fromTodayWorkDay."日<br> ";
         echo "本日までの所定労働時間：".$fromTodayWorkTime."時間00分<br>";
@@ -67,7 +68,9 @@ $defineWorkDay = 0;
         echo "本日までの必要労働時間：".changeHour(((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)))."<br>";
         echo "本日までの労働時間".changeHour($inuptTimeMinit);
         echo "</div>";
-
+        echo "<form action='' type='POST' >";
+        echo "<input type='submit' name='csv' value='csvファイルをダウンロードする'> ";
+        echo "</form>";
         }
     ?>
 <!-- // ===================================
