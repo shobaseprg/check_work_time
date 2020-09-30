@@ -1,6 +1,8 @@
 <?php  
 session_start();
 require('../dbconnect.php');
+require('../calculate.php');
+
 
 session_destroy();
 $_SESSION = array();
@@ -66,7 +68,7 @@ if (!empty($_POST)) {
     <form action="" method="post">
       <div>
         name
-        <input type="text" name="name" maxlength="10" value="<?php print(htmlspecialchars($_POST['name'], ENT_QUOTES));?>" />
+        <input type="text" name="name" maxlength="10" value="<?php echo sanitize($_POST['name']);?>" />
       </div>
         <?php if($error['name'] === 'blank'): ?>
           <p class='error-display'>nameを入力してください</p>
@@ -76,7 +78,7 @@ if (!empty($_POST)) {
         <?php endif; ?>
       <div>
       パスワード
-        <input type="password" name="password" size="10" maxlength="20" value="<?php print(htmlspecialchars($_POST['password'],ENT_QUOTES));?>" />
+        <input type="password" name="password" size="10" maxlength="20" value="<?php echo sanitize($_POST['password']);?>" />
       </div>
         <?php if($error['password'] === 'length'): ?>
           <p class='error-display'>*パスワードを4文字以上、１０文字以内で入力してください</p>

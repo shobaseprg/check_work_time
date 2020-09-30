@@ -30,3 +30,7 @@ function sessionCheck($userId, $sessionTime) {
   }
 }
 
+function sanitize ($inputWord){
+  return htmlspecialchars($inputWord, ENT_QUOTES, 'UTF-8');
+}
+

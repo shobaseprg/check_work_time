@@ -19,7 +19,8 @@ $defineWorkDay = 0;
   </head>
 
   <body>
-  <h1><?php  print(htmlspecialchars($_SESSION['userName'], ENT_QUOTES))."さん";?></h1>
+  <h1><?php  echo sanitize($_SESSION['userName'])."さん";?></h1>
+
     <a href= 'edit.php'>カレンダー編集</a>
     <a href= 'join/logout.php'>ログアウト</a>
     <br>

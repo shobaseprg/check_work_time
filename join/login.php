@@ -1,16 +1,17 @@
 <?php 
 session_start();
 require('../dbconnect.php');
+require('../calculate.php');
 
-if ($_COOKIE !== '')  {
+if ($_COOKIE !== '')  {  //クッキーが保存されていた場合
   $name = $_COOKIE['name'];
 }
-if(!empty($_POST)) {
+if(!empty($_POST)) {  //初回表示時は通過しない
   if (($_POST['name'] !=='' && $_POST['password'] !=='')) {
     $loginWords = $db->prepare('SELECT * FROM users WHERE name=? AND password=?');
     $loginWords->execute(array($_POST['name'], sha1($_POST['password'])));
     $user = $loginWords->fetch();
-      if ($user) {
+      if ($user) {  //入力された名前とパスワードを持つユーザーが存在した場合
         $_SESSION['userId'] = $user['id'];
         $_SESSION['userName'] = $user['name'];
         $_SESSION['time'] = time();
@@ -41,11 +42,11 @@ if(!empty($_POST)) {
     <form action='' method='post'>
       <div>
         name
-          <input type='text' name='name' maxlength='10' value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>"/>
+          <input type='text' name='name' maxlength='10' value="<?php echo sanitize($name); ?>"/>
       </div>
       <div>
         password
-          <input type='password' name='password' maxlength='10' value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES); ?>"/>
+          <input type='password' name='password' maxlength='10' value="<?php echo sanitize($_POST['password']); ?>"/>
       </div>
       <br>
       <div>
