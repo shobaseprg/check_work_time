@@ -3,7 +3,6 @@ session_start();
 require('../dbconnect.php');
 require('../calculate.php');
 
-
 session_destroy();
 $_SESSION = array();
 
@@ -94,5 +93,6 @@ if (!empty($_POST)) {
       <?php endif; ?>
       <br><br>
       <div><input type="submit" value="登録する" /></div>
+    </form>
   </body>
 </html>
