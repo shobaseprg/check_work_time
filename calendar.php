@@ -41,6 +41,9 @@ $defineWorkDay = 0;
 // 計算結果
 // =================================== -->
     <?php
+      // if (!empty($_POST['csv'])) {
+      //   putCsv();
+      // }
       if (!empty($_POST['calculate'])){
         $today = (int)date("d");
         $fromTodayWorkTime = 0;
