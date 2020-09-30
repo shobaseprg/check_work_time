@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('dbconnect.php');
+header('X-FRAME-OPTIONS:DENY');
 
 $dayOfTheWeek =array('日','月','火','水','木','金','土');
 
