@@ -12,7 +12,7 @@ $lastday = date('d', strtotime('last day of '.$year.'-'.$month));
 if (isset($_POST['confirm'])) {  // 確認するが押された場合
   $_SESSION = $_POST;
   $_SESSION['holiday'] = $_POST['holiday'];
-  if (!empty($_POST['lackTimeHour'])) {
+  if (!empty($_POST['lackTimeHour']) || !empty($_POST['lackTimeMinit'])) {
     $_SESSION['lackTime'] = changeMimit($_POST['lackTimeHour'], $_POST['lackTimeMinit']);
   } else {
     $_SESSION['lackTime'] = 0;
