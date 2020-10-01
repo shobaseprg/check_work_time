@@ -94,5 +94,7 @@ if (!empty($_POST)) {
       <br><br>
       <div><input type="submit" value="登録する" /></div>
     </form>
+    <br>
+    <a href='login.php'>ログインヘ</a>
   </body>
 </html
