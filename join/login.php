@@ -70,7 +70,8 @@ if(!empty($_POST)) {  //初回表示時は通過しない
         <?php if($error['login'] === 'faild'): ?>
           <p class='error-display'>間違っています。</p>
         <?php endif; ?>
-        <input type='submit' value='ログインする' />
+        <!-- <input type='submit' value='ログインする' /> -->
+        メンテナンス中
         <input type='hidden' name='csrf' value='<?php echo $token ?>' /> <!-- csrf対策 -->
 
     </form>

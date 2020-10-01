@@ -92,7 +92,8 @@ if (!empty($_POST)) {
         <p class='error-display'>ですよね</p>
       <?php endif; ?>
       <br><br>
-      <div><input type="submit" value="登録する" /></div>
+      <!-- <div><input type="submit" value="登録する" /></div> -->
+      メンテナンス中
     </form>
   </body>
 </html>
