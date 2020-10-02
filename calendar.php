@@ -6,11 +6,8 @@ require('getDB.php');
 
 // ログイン処理
 sessionCheck($_SESSION['userId'], $_SESSION['time']);
-$defineWorkDay = 0;
 
-if (!empty($_POST['csv'])){
-  putcsv();
-}
+$defineWorkDay = 0;
 ?>
 
 <!DOCTYPE html>
@@ -62,8 +59,8 @@ if (!empty($_POST['csv'])){
           $is_over = "超過";
         }
         $resultAbs = abs($result);
-        $lackTime = changeHour($resultAbs).$is_over;
         echo "<br><div class='result'>".changeHour($resultAbs).$is_over."</div><br>";
+
         echo "<div class='detail'>";
         echo "本日までの所定労働日数(休日、有給を除く日数）：".$fromTodayWorkDay."日<br> ";
         echo "本日までの所定労働時間：".$fromTodayWorkTime."時間00分<br>";
@@ -71,7 +68,7 @@ if (!empty($_POST['csv'])){
         echo "本日までの必要労働時間：".changeHour(((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)))."<br>";
         echo "本日までの労働時間".changeHour($inuptTimeMinit);
         echo "</div>";
-        echo "<form action='' method='POST' >";
+        echo "<form action='' type='POST' >";
         echo "<input type='submit' name='csv' value='csvファイルをダウンロードする'> ";
         echo "</form>";
         }
@@ -106,7 +103,6 @@ if (!empty($_POST['csv'])){
             }
             echo "</tr>";
           }
-          var_dump($lackTime);
         ?>
     </table>
   </body>

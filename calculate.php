@@ -35,39 +35,4 @@ function sanitize ($inputWord){
   return htmlspecialchars($inputWord, ENT_QUOTES, 'UTF-8');
 }
 
-function putcsv($lackTime, changeHour($inuptTimeMinit), changeHour(((int)$saveCalendar['lackTime'] + ($fromTodayWorkTime * 60)))){
-  $today = date("Y-m-d");
-  header("Content-Type: application/octet-stream");
-  header("Content-Disposition: attachment; filename={$today}.csv");
-  header("Content-Transfer-Encoding: binary");
-  
-  // 変数の初期化
-  $times = array();
-  $csv = null;
-  
-  // 出力したいデータのサンプル
-  $times = array(
-    array(
-      'lackTime' => "過不足時間",
-      'workTime' => "労働時間",
-      'mustTime' => '必要労働時間'
-    ),
-    array(
-      'lackTime' => $lackTime,
-      'workTime' => $workTime,
-      'mustTime' => $mustTime
-    )
-  );
-  
-  // 出力データ生成
-  foreach( $times as $value ) {
-    $csv .= $value['lackTime'].",".$value['workTime'].",".$value['mustTime']."\n" ;
-  }
-  
-  // CSVファイル出力
-  echo $csv;
-  exit;
-
-}
-
 ?>
