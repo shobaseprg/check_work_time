@@ -31,6 +31,10 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
   </head>
 
   <body>
+  <div class='hintBox'>
+  ・カレンダーを登録・カレンダをへんsyする場合：
+  　カレンダー登録をクリックします。
+  </div>
     <h1><?php echo "カレンダー編集" ?></h1>
     <form action="" method="post">
       <input type="submit" name='get' value="今月のカレンダーを取得する(※祝日はgoogleカレンダーに基づきます。)">
@@ -44,7 +48,7 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
       呼び出した時
       =================================== -->
 
-    <?php if (!empty($_POST['recall'])) : ?>  
+    <?php if (!empty($_POST['recall'])) : ?>
       <br>
         ※休日（有給含む）にチェックを入れてくください。
         （後から編集可能です。）
@@ -58,13 +62,13 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
               echo "<tr>";
               echo "<td>".$i."</td>";
                 $week = $saveDay[$i];// 曜日を数字で格納
-                echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+                echo "<input type='hidden' name='week[]' value='".$week."' />";
                 echo "<td>".$dayOfTheWeek[$week]."</td>";  // 日本語で曜日出力
               if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
-                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
+                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>";
                 if ($saveHolidayName[$i."d"] !== "") {  // 祝日を回して調査日と合致するか確認
                   $holidayName = $saveHolidayName[$i."d"];
-                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>";
                   echo "<td>".$holidayName."</td>";
                 }
               } else {
@@ -99,7 +103,7 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
       取得した時
       =================================== -->
 
-    <?php if (!empty($_POST['get'])) : ?>  
+    <?php if (!empty($_POST['get'])) : ?>
       <br>
         ※休日（有給含む）にチェックを入れてくください。
         （後から編集可能です。）
@@ -112,7 +116,7 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
               echo "<td>".$i."</td>";  // 日付出力
               $timestamp = mktime(0,0,0,$month,$i,$year);
               $week = date("w", $timestamp);  // 曜日を数字で格納
-              echo "<input type='hidden' name='week[]' value='".$week."' />"; 
+              echo "<input type='hidden' name='week[]' value='".$week."' />";
               echo "<td>".$dayOfTheWeek[$week]."</td>";  // 日本語で曜日出力
 
               if ($i < 10) {
@@ -122,15 +126,15 @@ if (isset($_POST['confirm'])) {  // 確認するが押された場合
               }
 
               if ($week == 0  || $week == 6 ) { // 土日だった場合
-                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
+                echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>";
                 continue;
                 // 土日だった場合は、ループをスキップ
               }
               foreach($date->items as $row) {
                 if ($row->start->date === $targetDay) {  // 祝日を回して調査日と合致するか確認
                   $holidayName = $row->summary;
-                  echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>"; 
-                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>"; 
+                  echo "<td><input type='checkbox' name='holiday[]' value=".$i." checked='checked'></td>";
+                  echo "<input type='hidden' name='holidayName[".$i."]' value='".$holidayName."'>";
                   echo "<td>".$holidayName."</td>";
                   $isHoliday = "ON";
                   break;

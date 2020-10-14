@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require('dbconnect.php');
 require('calculate.php');
@@ -19,12 +19,20 @@ $defineWorkDay = 0;
   </head>
 
   <body>
+  <div class='hintBox'>
+    アプリ概要
+    ・本日時点での労働時間の過不足を計算するアプリです
+
+  </div>
+
   <h1><?php  echo sanitize($_SESSION['userName'])."さん";?></h1>
 
+    <div class='hint' >使い方</div>
     <a href= 'edit.php'>カレンダー編集</a>
     <a href= 'join/logout.php'>ログアウト</a>
     <br>
     <br>
+
 <!-- ===================================
 入力フォーム
 =================================== -->
@@ -90,12 +98,12 @@ $defineWorkDay = 0;
 
             if ($saveCalendar[$i."d"] == 1 ) { // 休日だった場合
               echo "<td>";
-                echo "休"; 
+                echo "休";
               echo "</td>";
               if ($saveHolidayName[$i."d"] !== "") {  // 祝日名が格納されているか
                 $holidayName = $saveHolidayName[$i."d"];
               echo "<td>";
-                echo $holidayName ; 
+                echo $holidayName ;
               echo "</td>";
               }
             } else {  // 労働日の場合

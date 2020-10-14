@@ -41,3 +41,12 @@
 .t{
 	margin-top: 10px;
 }
+
+.hint{
+	border: solid 1px;
+	width: 100px;
+	margin-top:10px;
+	margin-bottom: 10px;
+	text-align: center;
+	background-color: pink;
+}

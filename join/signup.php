@@ -1,4 +1,4 @@
-<?php  
+<?php
 session_start();
 require('../dbconnect.php');
 require('../calculate.php');
@@ -24,7 +24,7 @@ if (!empty($_POST)) {
     $record = $member->fetch();
     if ($record['cnt'] > 0) {
       $error['name'] = "duplicate";
-    } 
+    }
   }
   if (empty($error)) {
       $user = $db->prepare('INSERT INTO users SET name=?, password=?');
@@ -64,6 +64,9 @@ if (!empty($_POST)) {
   </head>
   <body>
   <h1>新規登録</h1>
+
+
+
     <form action="" method="post">
       <div>
         name
