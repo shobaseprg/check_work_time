@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 require('../dbconnect.php');
 require('../calculate.php');
@@ -48,16 +48,7 @@ if(!empty($_POST)) {  //初回表示時は通過しない
   </head>
   <body>
     <h1>ログイン</h1>
-
-<form action="https://api.passclip.com/official/auth" method="POST" enctype="application/x-www-form-urlencoded">
-<input type="text" name="app_service_id" value="xxxxxxxxxxxxxxxx">
-<input type="text" name="email" value="xxxx@xxxxxxxx.com">
-<input type="text" name="password" value="xxxxxxxx">
-<input type="submit">
-</form>
-
-
-    <!-- <form action='' method='post'>
+    <form action='' method='post'>
       <div>
         name
           <input type='text' name='name' maxlength='10' value="<?php echo sanitize($name); ?>"/>
@@ -80,10 +71,10 @@ if(!empty($_POST)) {  //初回表示時は通過しない
           <p class='error-display'>間違っています。</p>
         <?php endif; ?>
         <input type='submit' value='ログインする' />
-        <input type='hidden' name='csrf' value='<?php echo $token ?>' />
+        <input type='hidden' name='csrf' value='<?php echo $token ?>' /> <!-- csrf対策 -->
 
-    </form> -->
-    <!-- <br>
-    <a href='../join/signup.php'>新規登録へ</a> -->
+    </form>
+    <br>
+    <a href='../join/signup.php'>新規登録へ</a>
   </body>
 </html>
